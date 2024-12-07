@@ -1,0 +1,145 @@
+Command: tree -I "javafx-sdk-23.0.1"
+Output:
+.
+├── README.md
+├── backend
+│   ├── models
+│   │   ├── Category.java
+│   │   ├── Priority.java
+│   │   ├── Reminder.java
+│   │   ├── ReminderType.java
+│   │   ├── Status.java
+│   │   └── Task.java
+│   ├── services
+│   │   ├── BackendManager.java
+│   │   ├── CategoryService.java
+│   │   ├── PriorityService.java
+│   │   ├── ReminderService.java
+│   │   └── TaskService.java
+│   ├── tests
+│   │   └── services
+│   │       └── TaskServiceTest.java
+│   └── utils
+│       ├── JsonUtils.java
+│       ├── TestJson.java
+│       └── data
+│           ├── category.json
+│           ├── priority.json
+│           ├── reminder.json
+│           └── task.json
+├── cleanup.sh
+├── description_english.txt
+├── file_tree.txt
+├── fix_project.sh
+├── frontend
+│   └── MainClass.java
+├── pom.xml
+├── pom.xml.backup
+├── pom.xml.bak
+├── run.sh
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   ├── backend
+│   │   │   │   ├── models
+│   │   │   │   │   ├── Category.java
+│   │   │   │   │   ├── Priority.java
+│   │   │   │   │   ├── Reminder.java
+│   │   │   │   │   ├── ReminderType.java
+│   │   │   │   │   ├── Status.java
+│   │   │   │   │   └── Task.java
+│   │   │   │   ├── services
+│   │   │   │   │   ├── BackendManager.java
+│   │   │   │   │   ├── CategoryService.java
+│   │   │   │   │   ├── CategoryService.java.bak
+│   │   │   │   │   ├── PriorityService.java
+│   │   │   │   │   ├── ReminderService.java
+│   │   │   │   │   └── TaskService.java
+│   │   │   │   └── utils
+│   │   │   │       ├── JsonUtils.java
+│   │   │   │       └── TestJson.java
+│   │   │   └── frontend
+│   │   │       └── MainClass.java
+│   │   └── resources
+│   │       └── data
+│   │           ├── category.json
+│   │           ├── priority.json
+│   │           ├── reminder.json
+│   │           └── task.json
+│   └── test
+│       ├── java
+│       │   └── backend
+│       │       └── services
+│       └── resources
+│           └── data
+├── target
+│   ├── classes
+│   │   ├── backend
+│   │   │   ├── models
+│   │   │   │   ├── Category.class
+│   │   │   │   ├── Priority.class
+│   │   │   │   ├── Reminder.class
+│   │   │   │   ├── ReminderType.class
+│   │   │   │   ├── Status.class
+│   │   │   │   └── Task.class
+│   │   │   ├── services
+│   │   │   │   ├── BackendManager.class
+│   │   │   │   ├── CategoryService.class
+│   │   │   │   ├── PriorityService.class
+│   │   │   │   ├── ReminderService.class
+│   │   │   │   └── TaskService.class
+│   │   │   └── utils
+│   │   │       ├── JsonUtils$1.class
+│   │   │       ├── JsonUtils$2.class
+│   │   │       ├── JsonUtils$3.class
+│   │   │       ├── JsonUtils$4.class
+│   │   │       ├── JsonUtils.class
+│   │   │       ├── TestJson$1.class
+│   │   │       └── TestJson.class
+│   │   └── frontend
+│   │       └── MainClass.class
+│   ├── generated-sources
+│   │   └── annotations
+│   ├── generated-test-sources
+│   │   └── test-annotations
+│   ├── maven-status
+│   │   └── maven-compiler-plugin
+│   │       ├── compile
+│   │       │   └── default-compile
+│   │       │       ├── createdFiles.lst
+│   │       │       └── inputFiles.lst
+│   │       └── testCompile
+│   │           └── default-testCompile
+│   │               ├── createdFiles.lst
+│   │               └── inputFiles.lst
+│   └── test-classes
+├── task.json
+└── tree_seed.sh
+
+43 directories, 72 files
+
+Command: ls -al
+Output:
+total 160
+drwxr-xr-x@ 21 chris  staff   672 Dec  7 02:00 .
+drwx------+ 20 chris  staff   640 Dec  7 01:14 ..
+-rw-r--r--@  1 chris  staff  6148 Dec  6 23:04 .DS_Store
+drwxr-xr-x@ 13 chris  staff   416 Dec  7 01:57 .git
+-rw-r--r--@  1 chris  staff   239 Dec  6 23:39 .gitignore
+-rw-r--r--@  1 chris  staff    23 Dec  6 21:39 README.md
+drwxr-xr-x@  6 chris  staff   192 Dec  7 01:57 backend
+-rwxr-xr-x@  1 chris  staff  5959 Dec  7 01:28 cleanup.sh
+-rw-r--r--@  1 chris  staff  3499 Dec  6 23:14 description_english.txt
+-rw-r--r--@  1 chris  staff  5065 Dec  7 02:00 file_tree.txt
+-rwxr-xr-x@  1 chris  staff  6861 Dec  7 01:31 fix_project.sh
+drwxr-xr-x@  3 chris  staff    96 Dec  7 01:57 frontend
+drwxr-xr-x@  5 chris  staff   160 Oct 15 21:37 javafx-sdk-23.0.1
+-rw-r--r--@  1 chris  staff  6316 Dec  7 01:57 pom.xml
+-rw-r--r--@  1 chris  staff  6316 Dec  7 01:31 pom.xml.backup
+-rw-r--r--@  1 chris  staff  6316 Dec  7 01:28 pom.xml.bak
+-rwxr-xr-x@  1 chris  staff   629 Dec  6 22:30 run.sh
+drwxr-xr-x@  4 chris  staff   128 Dec  7 01:26 src
+drwxr-xr-x@  7 chris  staff   224 Dec  7 01:46 target
+-rw-r--r--@  1 chris  staff    63 Dec  7 01:57 task.json
+-rwxr-xr-x@  1 chris  staff  1661 Dec  7 01:59 tree_seed.sh
+
