@@ -1,0 +1,27 @@
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# OS Files
+.DS_Store
+
+# Maven target directory
+/target/
+
+# JavaFX SDK
+javafx-sdk-23.0.1/
+
+# Build directories
+out/
+lib/
+
+# IDE files
+*.idea/
+*.vscode/

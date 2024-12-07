@@ -1,0 +1,16 @@
+[
+    {
+      "title": "Sample Task",
+      "description": "This is a sample task.",
+      "category": {
+        "name": "Work"
+      },
+      "priority": {
+        "name": "Default"
+      },
+      "deadline": "2024-12-31",
+      "status": "OPEN",
+      "reminders": []
+    }
+  ]
+  
