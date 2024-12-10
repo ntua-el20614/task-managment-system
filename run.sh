@@ -1,24 +1,19 @@
 #!/bin/bash
 
-# Define paths
-JAVA_FX_LIB=./javafx-sdk-23.0.1/lib
-CLASSPATH="./lib/*:out"
+# Exit immediately if a command exits with a non-zero status
+set -e
 
-# Compile all Java files in the frontend folder with Jackson and JavaFX libraries
-javac --module-path "$JAVA_FX_LIB" \
-      --add-modules javafx.controls,javafx.fxml \
-      -cp "./lib/*" \
-      -d out \
-      $(find ./frontend -name "*.java")
+echo "Starting Maven build and execution..."
+
+# Clean and compile the Maven project
+mvn clean compile
 
 # Check if compilation was successful
 if [ $? -eq 0 ]; then
     echo "Compilation successful. Running the application..."
-    # Run the JavaFX application with Jackson and JavaFX libraries
-    java --module-path "$JAVA_FX_LIB" \
-         --add-modules javafx.controls,javafx.fxml \
-         -cp "$CLASSPATH" \
-         frontend.MainClass
+    # Run the JavaFX application using Maven's exec plugin
+    mvn exec:java
 else
     echo "Compilation failed. Please fix the errors and try again."
+    exit 1
 fi

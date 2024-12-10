@@ -260,6 +260,25 @@ public class DataStore {
         }
     }
 
+    public void addNewTask(String title, String description, UUID priorityId, LocalDate deadline) {
+        Priority priority = priorities.get(priorityId);
+        if (priority == null) {
+            priority = priorities.get(DEFAULT_PRIORITY_ID); // Default Priority
+        }
+
+        // Define a default category UUID (ensure this UUID exists in your categories.json)
+        UUID defaultCategoryId = UUID.fromString("00000000-0000-0000-0000-000000000000"); // Replace with actual default category UUID
+        Category category = categories.get(defaultCategoryId);
+        if (category == null) {
+            throw new IllegalArgumentException("Default category not found.");
+        }
+
+        Task newTask = new Task(title, description, category, priority, deadline);
+        tasks.put(newTask.getId(), newTask);
+        saveTasks(); // Method to persist tasks to tasks.json
+        System.out.println("Added new task: " + newTask.getTitle());
+    }
+
     // Task Operations
     public Collection<Task> getAllTasks() {
         return tasks.values();

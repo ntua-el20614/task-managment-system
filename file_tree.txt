@@ -4,47 +4,40 @@ Command: tree -I "javafx-sdk-23.0.1"
 Output:
 .
 ├── README.md
+├── backend
+│   └── data
+│       ├── categories.json
+│       ├── priorities.json
+│       └── tasks.json
 ├── description_english.txt
 ├── file_tree.txt
-├── frontend
-│   └── MainClass.java
-├── out
-│   └── frontend
-│       └── MainClass.class
 ├── pom.xml
 ├── run.sh
 ├── src
 │   ├── main
 │   │   ├── java
-│   │   │   └── backend
-│   │   │       ├── Main.java
-│   │   │       ├── data
-│   │   │       │   ├── categories.json
-│   │   │       │   ├── priorities.json
-│   │   │       │   └── tasks.json
-│   │   │       ├── models
-│   │   │       │   ├── Category.java
-│   │   │       │   ├── Priority.java
-│   │   │       │   ├── Reminder.java
-│   │   │       │   ├── ReminderType.java
-│   │   │       │   ├── Status.java
-│   │   │       │   └── Task.java
-│   │   │       └── storage
-│   │   │           └── DataStore.java
+│   │   │   ├── backend
+│   │   │   │   ├── Main.java
+│   │   │   │   ├── data
+│   │   │   │   │   ├── categories.json
+│   │   │   │   │   ├── priorities.json
+│   │   │   │   │   └── tasks.json
+│   │   │   │   ├── models
+│   │   │   │   │   ├── Category.java
+│   │   │   │   │   ├── Priority.java
+│   │   │   │   │   ├── Reminder.java
+│   │   │   │   │   ├── ReminderType.java
+│   │   │   │   │   ├── Status.java
+│   │   │   │   │   └── Task.java
+│   │   │   │   └── storage
+│   │   │   │       └── DataStore.java
+│   │   │   └── frontend
+│   │   │       └── MainClass.java
 │   │   └── resources
 │   └── test
 │       └── java
 ├── target
 │   ├── classes
-│   │   └── backend
-│   │       └── models
-│   │           ├── Category.class
-│   │           ├── Priority.class
-│   │           ├── Reminder$1.class
-│   │           ├── Reminder.class
-│   │           ├── ReminderType.class
-│   │           ├── Status.class
-│   │           └── Task.class
 │   ├── generated-sources
 │   │   └── annotations
 │   └── maven-status
@@ -55,26 +48,25 @@ Output:
 │                   └── inputFiles.lst
 └── tree_seed.sh
 
-24 directories, 28 files
+22 directories, 23 files
 
 Command: ls -al
 Output:
-total 80
-drwxr-xr-x@ 16 chris  staff   512 Dec 10 10:41 .
+total 72
+drwxr-xr-x@ 15 chris  staff   480 Dec 10 12:25 .
 drwx------+ 15 chris  staff   480 Dec 10 10:33 ..
 -rw-r--r--@  1 chris  staff  6148 Dec  9 16:24 .DS_Store
-drwxr-xr-x@ 15 chris  staff   480 Dec  9 15:20 .git
+drwxr-xr-x@ 15 chris  staff   480 Dec 10 11:37 .git
 -rw-r--r--@  1 chris  staff   239 Dec  6 23:39 .gitignore
 -rw-r--r--@  1 chris  staff    23 Dec  6 21:39 README.md
+drwxr-xr-x@  3 chris  staff    96 Dec 10 10:57 backend
 -rw-r--r--@  1 chris  staff  3499 Dec  6 23:14 description_english.txt
--rw-r--r--@  1 chris  staff  2151 Dec 10 10:41 file_tree.txt
-drwxr-xr-x@  3 chris  staff    96 Dec  7 01:57 frontend
+-rw-r--r--@  1 chris  staff  1908 Dec 10 12:25 file_tree.txt
 drwxr-xr-x@  5 chris  staff   160 Oct 15 21:37 javafx-sdk-23.0.1
-drwxr-xr-x@  3 chris  staff    96 Dec  9 15:47 out
--rw-r--r--@  1 chris  staff  4767 Dec  9 16:26 pom.xml
--rwxr-xr-x@  1 chris  staff   750 Dec  9 15:46 run.sh
+-rw-r--r--@  1 chris  staff  3284 Dec 10 12:20 pom.xml
+-rwxr-xr-x@  1 chris  staff   471 Dec 10 12:15 run.sh
 drwxr-xr-x   5 chris  staff   160 Dec  9 16:23 src
-drwxr-xr-x@  5 chris  staff   160 Dec  9 16:32 target
+drwxr-xr-x@  5 chris  staff   160 Dec 10 12:24 target
 -rwxr-xr-x@  1 chris  staff  2060 Dec  9 16:28 tree_seed.sh
 
 where im using javafx for the frontend and jackson for the backend
