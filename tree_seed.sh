@@ -22,6 +22,10 @@ if [ -f "$OUTPUT_FILE" ]; then
     rm "$OUTPUT_FILE"
 fi
 
+# Add the introductory text
+echo "so, i have this project:" >> "$OUTPUT_FILE"
+echo "" >> "$OUTPUT_FILE"  # Add an empty line for readability
+
 # Function to execute a command and log its execution and output
 execute_and_log() {
     local cmd="$1"
@@ -46,6 +50,17 @@ execute_and_log 'tree -I "javafx-sdk-23.0.1"'
 # Execute the 'ls -al' command and log it
 execute_and_log 'ls -al'
 
+# Add the closing text
+cat <<EOF >> "$OUTPUT_FILE"
+where im using javafx for the frontend and jackson for the backend
+Jackson
+Jackson Packages:
+jackson-annotations-2.18.1.jar
+jackson-core-2.18.1.jar
+jackson-databind-2.18.1.jar
+
+im in on a mac (silicon)
+EOF
+
 # Notify the user that the operations are complete
 echo "Commands and their outputs have been saved to '$OUTPUT_FILE'."
-

@@ -1,0 +1,35 @@
+[
+    {
+      "id": "generated-uuid-1",
+      "title": "Plan Team Meeting",
+      "description": "Organize the quarterly team meeting.",
+      "category": {
+        "id": "category-uuid",
+        "name": "Work"
+      },
+      "priority": {
+        "id": "priority-uuid",
+        "name": "High"
+      },
+      "completionDeadline": "25/12/24",
+      "status": "OPEN",
+      "reminders": []
+    },
+    {
+      "id": "generated-uuid-2",
+      "title": "Submit Tax Forms",
+      "description": "Complete and submit all tax-related documents.",
+      "category": {
+        "id": "category-uuid",
+        "name": "Work"
+      },
+      "priority": {
+        "id": "priority-uuid",
+        "name": "High"
+      },
+      "completionDeadline": "15/01/24",
+      "status": "DELAYED",
+      "reminders": []
+    }
+  ]
+  
