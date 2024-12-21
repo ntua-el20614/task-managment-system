@@ -1,0 +1,13 @@
+[
+  {
+    "username": "chris",
+    "passwordHash": "$2a$10$EyKiEqcSaWkIY14Ddc01f.vYSmD6NYLND07wWu5.vTsEPwZJyzirW",
+    "tasks": [],
+    "categories": [
+      "Default Category"
+    ],
+    "priorities": [
+      "Default"
+    ]
+  }
+]

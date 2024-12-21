@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+
+<GridPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.EditTaskDialogController" hgap="10" vgap="10">
+    <padding>
+        <Insets top="20" right="20" bottom="10" left="20"/>
+    </padding>
+    <children>
+        <Label text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="txtTitle" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+        <Label text="Description:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextArea fx:id="txtDescription" GridPane.columnIndex="1" GridPane.rowIndex="1" prefRowCount="3"/>
+
+        <Label text="Category:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <ComboBox fx:id="cmbCategory" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+        <Label text="Priority:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <ComboBox fx:id="cmbPriority" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+        <Label text="Deadline:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <DatePicker fx:id="dpDeadline" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+        <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <ComboBox fx:id="cmbStatus" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Open"/>
+                    <String fx:value="In Progress"/>
+                    <String fx:value="Postponed"/>
+                    <String fx:value="Completed"/>
+                    <String fx:value="Delayed"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+
+        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="6" alignment="CENTER_RIGHT">
+            <children>
+                <Button text="Cancel" onAction="#handleCancel"/>
+                <Button text="Save" onAction="#handleSave" fx:id="btnSave" disable="true"/>
+            </children>
+        </HBox>
+    </children>
+</GridPane>
