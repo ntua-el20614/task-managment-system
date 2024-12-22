@@ -8,7 +8,6 @@ import javafx.scene.control.Dialog;
 import javafx.stage.Modality;
 
 import java.io.IOException;
-import java.util.Optional;
 
 /**
  * AddTaskDialog.java
@@ -17,6 +16,7 @@ import java.util.Optional;
  */
 public class AddTaskDialog extends Dialog<Task> {
 
+    private AddTaskDialogController controller; // Store the controller instance
     private User currentUser;
 
     public AddTaskDialog(User user) {
@@ -29,7 +29,7 @@ public class AddTaskDialog extends Dialog<Task> {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/AddTaskDialog.fxml"));
             Parent root = loader.load();
 
-            AddTaskDialogController controller = loader.getController();
+            controller = loader.getController(); // Get the controller
             controller.setUser(currentUser);
 
             getDialogPane().setContent(root);
@@ -45,5 +45,14 @@ public class AddTaskDialog extends Dialog<Task> {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Returns the controller for this dialog.
+     * 
+     * @return The AddTaskDialogController instance.
+     */
+    public AddTaskDialogController getController() {
+        return controller;
     }
 }

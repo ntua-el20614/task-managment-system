@@ -31,10 +31,19 @@ public class Task {
         this.category = category;
         this.priority = priority;
         this.deadline = deadline;
-        this.status = status;
+        this.status = status == null ? "Open" : status; // Default to "Open"
         this.reminders = new ArrayList<>();
+        validateStatus();
     }
 
+    public void validateStatus() {
+        LocalDate today = LocalDate.now();
+        LocalDate taskDeadline = LocalDate.parse(this.deadline, DateTimeFormatter.ISO_DATE);
+    
+        if (!"Completed".equals(this.status) && taskDeadline.isBefore(today)) {
+            this.status = "Delayed";
+        }
+    }
     // Getters and Setters
     // (Ensure all fields have corresponding getters and setters.)
 

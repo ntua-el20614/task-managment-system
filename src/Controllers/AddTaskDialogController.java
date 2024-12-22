@@ -2,6 +2,7 @@ package Controllers;
 
 import Models.Task;
 import Models.User;
+import Utils.JsonUtils;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -10,6 +11,7 @@ import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * AddTaskDialogController.java
@@ -41,6 +43,7 @@ public class AddTaskDialogController {
 
     private User currentUser;
     private Task newTask;
+    private Consumer<Void> onTaskAddedCallback; // Callback for notifying task addition
 
     /**
      * Initializes the controller class.
@@ -48,10 +51,22 @@ public class AddTaskDialogController {
      */
     @FXML
     private void initialize() {
+        // Populate the Status ComboBox
+        cmbStatus.setItems(FXCollections.observableArrayList(
+            "Open", 
+            "In Progress", 
+            "Postponed", 
+            "Completed", 
+            "Delayed"
+        ));
+    
+        // Select the default value for the Status ComboBox
+        cmbStatus.getSelectionModel().selectFirst();
+    
         // Disable the Add button initially
         btnAdd.setDisable(true);
-
-        // Add listeners to enable the Add button when title is not empty
+    
+        // Enable the Add button only when the title field is not empty
         txtTitle.textProperty().addListener((observable, oldValue, newValue) -> {
             btnAdd.setDisable(newValue.trim().isEmpty());
         });
@@ -68,8 +83,22 @@ public class AddTaskDialogController {
         cmbPriority.setItems(FXCollections.observableArrayList(currentUser.getPriorities()));
         cmbCategory.getSelectionModel().selectFirst();
         cmbPriority.getSelectionModel().selectFirst();
-        cmbStatus.getSelectionModel().selectFirst();
+
+        // Initialize cmbStatus
+        if (cmbStatus != null) {
+            cmbStatus.getSelectionModel().selectFirst();
+        }
+
         dpDeadline.setValue(LocalDate.now());
+    }
+
+    /**
+     * Sets the callback to be executed after a task is added.
+     * 
+     * @param onTaskAddedCallback The callback function.
+     */
+    public void setOnTaskAddedCallback(Consumer<Void> onTaskAddedCallback) {
+        this.onTaskAddedCallback = onTaskAddedCallback;
     }
 
     /**
@@ -82,14 +111,32 @@ public class AddTaskDialogController {
         String category = cmbCategory.getValue();
         String priority = cmbPriority.getValue();
         LocalDate deadline = dpDeadline.getValue();
-        String status = cmbStatus.getValue();
 
-        if (title.isEmpty()) {
-            // Should not happen as Add button is disabled
+        if (title.isEmpty() || deadline == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Invalid Input");
+            alert.setContentText("Title and Deadline are required!");
+            alert.showAndWait();
             return;
         }
 
+        // Default status is "Open" if not provided
+        String status = "Open";
+
         newTask = new Task(title, description, category, priority, deadline.format(DateTimeFormatter.ISO_DATE), status);
+
+        // Add the new task to the current user's task list
+        currentUser.addTask(newTask);
+
+        // Persist the updated user data
+        JsonUtils.updateUser(currentUser);
+
+        // Trigger the reload callback
+        if (onTaskAddedCallback != null) {
+            onTaskAddedCallback.accept(null); // Notify the MainViewController
+        }
+
         // Close the dialog
         Stage stage = (Stage) btnAdd.getScene().getWindow();
         stage.close();

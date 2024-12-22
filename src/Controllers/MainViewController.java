@@ -9,6 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import src.App;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.Optional;
@@ -48,16 +51,19 @@ public class MainViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Retrieve the current user
         currentUser = App.getCurrentUser();
         if (currentUser == null) {
-            // Redirect to login if user is not set
+            // Redirect to login if no user is logged in
             App.showLoginView();
             return;
         }
 
-        // Initialize task list
-        taskList = FXCollections.observableArrayList(currentUser.getTasks());
+        // Initialize the task list and ListView
+        taskList = FXCollections.observableArrayList();
         taskListView.setItems(taskList);
+
+        // Set custom cell factory for task display
         taskListView.setCellFactory(param -> new ListCell<Task>() {
             @Override
             protected void updateItem(Task task, boolean empty) {
@@ -70,73 +76,95 @@ public class MainViewController implements Initializable {
             }
         });
 
-        // Update overdue tasks
-        updateOverdueTasks();
-
-        // Update aggregated information
-        updateAggregatedInfo();
+        // Load tasks for the current user
+        reloadTasks();
     }
 
-    private void updateOverdueTasks() {
-        for (Task task : currentUser.getTasks()) {
-            if (!task.getStatus().equalsIgnoreCase("Completed")) {
-                if (task.isOverdue()) {
-                    task.setStatus("Delayed");
-                }
-            }
+    /**
+     * Reloads tasks from the current user's data in the JSON file and updates the ListView.
+     */
+    private void reloadTasks() {
+        // Reload the current user's data from the JSON file
+        User updatedUser = JsonUtils.findUser(currentUser.getUsername());
+        if (updatedUser != null) {
+            currentUser = updatedUser; // Replace current user with updated data
+            taskList.setAll(currentUser.getTasks()); // Update the ObservableList with tasks from the file
+            updateAggregatedInfo(); // Update task statistics
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to reload tasks. User data could not be found.");
         }
-        JsonUtils.updateUser(currentUser);
-        taskList.setAll(currentUser.getTasks());
     }
 
+    /**
+     * Updates the labels showing aggregated task information.
+     */
     private void updateAggregatedInfo() {
-        lblTotalTasks.setText("Total Tasks: " + currentUser.getTasks().size());
+        lblTotalTasks.setText("Total Tasks: " + taskList.size());
         lblCompleted.setText("Completed: " + countTasksByStatus("Completed"));
         lblDelayed.setText("Delayed: " + countTasksByStatus("Delayed"));
         lblUpcoming.setText("Due within 7 days: " + countUpcomingTasks());
     }
 
+    /**
+     * Counts tasks by their status.
+     *
+     * @param status the status to count
+     * @return the number of tasks with the specified status
+     */
     private long countTasksByStatus(String status) {
-        return currentUser.getTasks().stream()
+        return taskList.stream()
                 .filter(task -> task.getStatus().equalsIgnoreCase(status))
                 .count();
     }
 
+    /**
+     * Counts tasks due within the next 7 days.
+     *
+     * @return the number of tasks due within 7 days
+     */
     private long countUpcomingTasks() {
-        return currentUser.getTasks().stream()
+        return taskList.stream()
                 .filter(task -> task.isDueWithinDays(7))
                 .count();
     }
 
+    /**
+     * Handles adding a new task.
+     */
     @FXML
     private void handleAddTask() {
         AddTaskDialog addTaskDialog = new AddTaskDialog(currentUser);
-        Optional<Task> result = addTaskDialog.showAndWait();
-        result.ifPresent(task -> {
-            currentUser.addTask(task);
-            JsonUtils.updateUser(currentUser);
-            taskList.add(task);
-            updateAggregatedInfo();
-        });
+        AddTaskDialogController controller = addTaskDialog.getController();
+        controller.setOnTaskAddedCallback(ignored -> reloadTasks()); // Set the reload callback
+    
+        addTaskDialog.showAndWait(); // Show the dialog
     }
 
+
+
+    /**
+     * Handles editing the selected task.
+     */
     @FXML
     private void handleEditTask() {
         Task selectedTask = taskListView.getSelectionModel().getSelectedItem();
         if (selectedTask != null) {
             EditTaskDialog editTaskDialog = new EditTaskDialog(currentUser, selectedTask);
             Optional<Task> result = editTaskDialog.showAndWait();
-            result.ifPresent(updatedTask -> {
-                currentUser.updateTask(updatedTask);
-                JsonUtils.updateUser(currentUser);
-                taskList.set(taskList.indexOf(selectedTask), updatedTask);
-                updateAggregatedInfo();
-            });
+            if (result.isPresent()) {
+                Task updatedTask = result.get();
+                currentUser.updateTask(updatedTask); // Update the task in the user object
+                JsonUtils.updateUser(currentUser); // Save changes to the JSON file
+                reloadTasks(); // Reload tasks to ensure the ListView reflects the change
+            }
         } else {
             showAlert(Alert.AlertType.WARNING, "No Task Selected", "Please select a task to edit.");
         }
     }
 
+    /**
+     * Handles deleting the selected task.
+     */
     @FXML
     private void handleDeleteTask() {
         Task selectedTask = taskListView.getSelectionModel().getSelectedItem();
@@ -148,22 +176,31 @@ public class MainViewController implements Initializable {
 
             Optional<ButtonType> response = confirm.showAndWait();
             if (response.isPresent() && response.get() == ButtonType.OK) {
-                currentUser.removeTask(selectedTask);
-                JsonUtils.updateUser(currentUser);
-                taskList.remove(selectedTask);
-                updateAggregatedInfo();
+                currentUser.removeTask(selectedTask); // Remove the task from the user object
+                JsonUtils.updateUser(currentUser); // Save changes to the JSON file
+                reloadTasks(); // Reload tasks to ensure the ListView reflects the change
             }
         } else {
             showAlert(Alert.AlertType.WARNING, "No Task Selected", "Please select a task to delete.");
         }
     }
 
+    /**
+     * Handles user logout.
+     */
     @FXML
     private void handleLogout() {
         App.setCurrentUser(null);
-        App.showLoginView();
+        App.showLoginView(); // Redirect to login
     }
 
+    /**
+     * Shows an alert dialog with the specified type, title, and message.
+     *
+     * @param type    the alert type
+     * @param title   the alert title
+     * @param message the alert message
+     */
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
