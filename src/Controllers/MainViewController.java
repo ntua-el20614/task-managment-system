@@ -1,4 +1,5 @@
 package Controllers;
+import src.App;
 
 import Models.Task;
 import Models.User;
@@ -6,9 +7,13 @@ import Utils.JsonUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.scene.control.*;
-import src.App;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -16,6 +21,7 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
 
 public class MainViewController implements Initializable {
 
@@ -136,7 +142,7 @@ public class MainViewController implements Initializable {
         AddTaskDialog addTaskDialog = new AddTaskDialog(currentUser);
         AddTaskDialogController controller = addTaskDialog.getController();
         controller.setOnTaskAddedCallback(ignored -> reloadTasks()); // Set the reload callback
-    
+
         addTaskDialog.showAndWait(); // Show the dialog
     }
 
@@ -182,6 +188,26 @@ public class MainViewController implements Initializable {
             }
         } else {
             showAlert(Alert.AlertType.WARNING, "No Task Selected", "Please select a task to delete.");
+        }
+    }
+
+
+    @FXML
+    private void handleSettings() {
+        try {
+            // Load the Settings view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/SettingsView.fxml"));
+            Parent root = loader.load();
+
+            // Configure the settings modal
+            Stage settingsStage = new Stage();
+            settingsStage.initModality(Modality.APPLICATION_MODAL);
+            settingsStage.setTitle("Settings");
+            settingsStage.setScene(new Scene(root));
+            settingsStage.showAndWait();
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to open the settings modal.");
+            e.printStackTrace();
         }
     }
 

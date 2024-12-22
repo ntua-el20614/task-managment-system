@@ -45,7 +45,7 @@ then
 fi
 
 # Execute the 'tree' command excluding 'javafx-sdk-23.0.1' and log it
-execute_and_log 'tree -I "javafx-sdk-23.0.1"'
+execute_and_log 'tree'
 
 # Execute the 'ls -al' command and log it
 execute_and_log 'ls -al'
