@@ -31,7 +31,8 @@
             <Button text="Add Task" onAction="#handleAddTask"/>
             <Button text="Edit Task" onAction="#handleEditTask"/>
             <Button text="Delete Task" onAction="#handleDeleteTask"/>
-            <Button text="Settings" onAction="#handleSettings"/> <!-- Added Settings Button -->
+            <Button text="Refresh" onAction="#handleRefresh"/>
+            <Button text="Settings" onAction="#handleSettings"/>
         </HBox>
     </bottom>
 </BorderPane>

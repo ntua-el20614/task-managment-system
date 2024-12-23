@@ -21,6 +21,7 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import src.App;
 
 
 public class MainViewController implements Initializable {
@@ -64,7 +65,9 @@ public class MainViewController implements Initializable {
             App.showLoginView();
             return;
         }
-
+        
+        App.getStage().setOnCloseRequest(event -> reloadTasks());
+        
         // Initialize the task list and ListView
         taskList = FXCollections.observableArrayList();
         taskListView.setItems(taskList);
@@ -174,14 +177,21 @@ public class MainViewController implements Initializable {
             Optional<Task> result = editTaskDialog.showAndWait();
             if (result.isPresent()) {
                 Task updatedTask = result.get();
-                currentUser.updateTask(updatedTask); // Update the task in the user object
-                JsonUtils.updateUser(currentUser); // Save changes to the JSON file
-                reloadTasks(); // Reload tasks to ensure the ListView reflects the change
+                // Replace the old task with the updated one in the user's task list
+                currentUser.getTasks().replaceAll(task -> 
+                    task.equals(selectedTask) ? updatedTask : task
+                );
+                
+                JsonUtils.updateUser(currentUser); // Persist changes to the JSON file
+                reloadTasks(); // Reload tasks to ensure the ListView reflects the changes
             }
         } else {
             showAlert(Alert.AlertType.WARNING, "No Task Selected", "Please select a task to edit.");
         }
     }
+
+
+
 
     /**
      * Handles deleting the selected task.
@@ -225,6 +235,15 @@ public class MainViewController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Handles refresh.
+     */
+    @FXML
+    private void handleRefresh() {
+        reloadTasks();
+    }
+
 
     /**
      * Handles user logout.

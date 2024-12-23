@@ -31,17 +31,7 @@
         <DatePicker fx:id="dpDeadline" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
         <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-        <ComboBox fx:id="cmbStatus" GridPane.columnIndex="1" GridPane.rowIndex="5">
-            <items>
-                <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="Open"/>
-                    <String fx:value="In Progress"/>
-                    <String fx:value="Postponed"/>
-                    <String fx:value="Completed"/>
-                    <String fx:value="Delayed"/>
-                </FXCollections>
-            </items>
-        </ComboBox>
+        <ComboBox fx:id="cmbStatus" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
         <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="6" alignment="CENTER_RIGHT">
             <children>
