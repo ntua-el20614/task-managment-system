@@ -21,6 +21,7 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import src.App;
 
 
 public class MainViewController implements Initializable {
@@ -64,7 +65,9 @@ public class MainViewController implements Initializable {
             App.showLoginView();
             return;
         }
-
+        
+        App.getStage().setOnCloseRequest(event -> reloadTasks());
+        
         // Initialize the task list and ListView
         taskList = FXCollections.observableArrayList();
         taskListView.setItems(taskList);
@@ -232,6 +235,15 @@ public class MainViewController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Handles refresh.
+     */
+    @FXML
+    private void handleRefresh() {
+        reloadTasks();
+    }
+
 
     /**
      * Handles user logout.
