@@ -72,25 +72,31 @@ public class AddTaskDialogController {
         });
     }
 
+
     /**
-     * Sets the current user and populates the ComboBoxes.
+     * Sets the current user and refreshes the ComboBoxes.
      * 
      * @param user The current authenticated user.
      */
     public void setUser(User user) {
         this.currentUser = user;
-        cmbCategory.setItems(FXCollections.observableArrayList(currentUser.getCategories()));
-        cmbPriority.setItems(FXCollections.observableArrayList(currentUser.getPriorities()));
-        cmbCategory.getSelectionModel().selectFirst();
-        cmbPriority.getSelectionModel().selectFirst();
-
-        // Initialize cmbStatus
-        if (cmbStatus != null) {
-            cmbStatus.getSelectionModel().selectFirst();
-        }
-
-        dpDeadline.setValue(LocalDate.now());
+    
+        // Refresh categories and priorities
+        refreshCategoriesAndPriorities();
     }
+    
+    /**
+     * Refreshes the categories and priorities in the ComboBoxes.
+     */
+    private void refreshCategoriesAndPriorities() {
+        if (currentUser != null) {
+            cmbCategory.setItems(FXCollections.observableArrayList(currentUser.getCategories()));
+            cmbPriority.setItems(FXCollections.observableArrayList(currentUser.getPriorities()));
+            cmbCategory.getSelectionModel().selectFirst();
+            cmbPriority.getSelectionModel().selectFirst();
+        }
+    }
+
 
     /**
      * Sets the callback to be executed after a task is added.
@@ -100,6 +106,19 @@ public class AddTaskDialogController {
     public void setOnTaskAddedCallback(Consumer<Void> onTaskAddedCallback) {
         this.onTaskAddedCallback = onTaskAddedCallback;
     }
+
+    /**
+     * Refreshes the categories and priorities in the ComboBoxes.
+     */
+    public void refreshData() {
+        if (currentUser != null) {
+            cmbCategory.setItems(FXCollections.observableArrayList(currentUser.getCategories()));
+            cmbPriority.setItems(FXCollections.observableArrayList(currentUser.getPriorities()));
+            cmbCategory.getSelectionModel().selectFirst();
+            cmbPriority.getSelectionModel().selectFirst();
+        }
+    }
+
 
     /**
      * Handles the action when the "Add" button is pressed.

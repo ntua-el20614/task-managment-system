@@ -1,23 +1,14 @@
 [
   {
     "username": "chris",
-    "passwordHash": "$2a$10$EyKiEqcSaWkIY14Ddc01f.vYSmD6NYLND07wWu5.vTsEPwZJyzirW",
+    "passwordHash": "$2a$10$6SRoj03ib2UGP4ZtrpxhU.4Eb3o24dpuoFN0MaLU.4i0ZwezQ686C",
     "tasks": [
       {
-        "title": "fox",
-        "description": "something to get to fox",
+        "title": "Polumesa",
+        "description": "A task managment project that has to be written in java",
         "category": "Default Category",
         "priority": "Default",
-        "deadline": "2024-12-22",
-        "status": "Open",
-        "reminders": []
-      },
-      {
-        "title": "eleos",
-        "description": "erojefo",
-        "category": "Default Category",
-        "priority": "Default",
-        "deadline": "2024-12-22",
+        "deadline": "2025-02-21",
         "status": "Open",
         "reminders": []
       }

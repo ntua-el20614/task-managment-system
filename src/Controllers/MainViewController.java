@@ -139,12 +139,27 @@ public class MainViewController implements Initializable {
      */
     @FXML
     private void handleAddTask() {
+        // Reload user data to ensure we have the latest categories and priorities
+        User updatedUser = JsonUtils.findUser(currentUser.getUsername());
+        if (updatedUser != null) {
+            currentUser = updatedUser; // Update the current user
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load user data.");
+            return;
+        }
+    
         AddTaskDialog addTaskDialog = new AddTaskDialog(currentUser);
         AddTaskDialogController controller = addTaskDialog.getController();
+    
+        // Ensure the dialog dynamically loads the latest categories and priorities
+        controller.setUser(currentUser);
+    
         controller.setOnTaskAddedCallback(ignored -> reloadTasks()); // Set the reload callback
-
+    
         addTaskDialog.showAndWait(); // Show the dialog
     }
+
+
 
 
 

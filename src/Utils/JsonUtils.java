@@ -89,8 +89,9 @@ public class JsonUtils {
         return true;
     }
 
+
     /**
-     * Updates an existing user in the users.json file.
+     * Updates an existing user in the users.json file and returns the updated user list.
      * 
      * @param updatedUser The user with updated information.
      */
@@ -104,4 +105,6 @@ public class JsonUtils {
         }
         writeUsers(users);
     }
+
+
 }
