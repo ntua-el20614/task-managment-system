@@ -174,14 +174,21 @@ public class MainViewController implements Initializable {
             Optional<Task> result = editTaskDialog.showAndWait();
             if (result.isPresent()) {
                 Task updatedTask = result.get();
-                currentUser.updateTask(updatedTask); // Update the task in the user object
-                JsonUtils.updateUser(currentUser); // Save changes to the JSON file
-                reloadTasks(); // Reload tasks to ensure the ListView reflects the change
+                // Replace the old task with the updated one in the user's task list
+                currentUser.getTasks().replaceAll(task -> 
+                    task.equals(selectedTask) ? updatedTask : task
+                );
+                
+                JsonUtils.updateUser(currentUser); // Persist changes to the JSON file
+                reloadTasks(); // Reload tasks to ensure the ListView reflects the changes
             }
         } else {
             showAlert(Alert.AlertType.WARNING, "No Task Selected", "Please select a task to edit.");
         }
     }
+
+
+
 
     /**
      * Handles deleting the selected task.
