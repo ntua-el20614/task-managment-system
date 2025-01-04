@@ -33,7 +33,7 @@ public class App extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("/Views/LoginView.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 400, 300); // Adjust dimensions as needed
+            Scene scene = new Scene(root, 600, 343); // Adjusted dimensions for better visibility
             primaryStage.setTitle("MediaLab Assistant - Login");
             primaryStage.setScene(scene);
             primaryStage.show();
