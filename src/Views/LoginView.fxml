@@ -1,50 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
 
-<VBox alignment="CENTER" spacing="20.0" style="-fx-max-width: 500px;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginViewController">
-    <padding>
-        <Insets bottom="50" left="50" right="50" top="50" />
-    </padding>
-    <children>
-        <GridPane hgap="10" vgap="10">
-            <children>
-                <!-- Username Label and TextField -->
-                <Label text="Username:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <TextField fx:id="usernameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-
-                <!-- Password Label and PasswordField -->
-                <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-                <!-- Log in Button -->
-                <Button fx:id="loginButton" onAction="#handleLoginButtonAction" text="Log in" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-
-                <!-- Sign up Button -->
-                <Button fx:id="signupButton" onAction="#handleSignupButtonAction" text="Sign up" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
-                <!-- Message Label -->
-                <Label fx:id="lblMessage" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2" />
-            </children>
-            <columnConstraints>
-                <ColumnConstraints minWidth="100" />
-                <ColumnConstraints minWidth="200" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="30" />
-                <RowConstraints minHeight="30" />
-                <RowConstraints minHeight="30" />
-                <RowConstraints minHeight="30" />
-            </rowConstraints>
-        </GridPane>
-    </children>
-</VBox>
+<Pane prefHeight="343.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginViewController">
+   <children>
+      <ImageView fitHeight="343.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Media/landing.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="usernameField" accessibleText="password" layoutX="383.0" layoutY="199.0" prefHeight="33.0" prefWidth="134.0" style="-fx-max-width: 135; -fx-min-width: 135;" />
+      <PasswordField fx:id="passwordField" accessibleText="username" layoutX="383.0" layoutY="245.0" prefHeight="29.0" prefWidth="134.0" style="-fx-max-width: 135; -fx-min-width: 135;" />
+      <Button fx:id="loginButton" layoutX="389.0" layoutY="292.0" onAction="#handleLoginButtonAction" style="-fx-background-color: #7690ff; -fx-border-color: #000000; -fx-border-width: 1px;" text="Log in" />
+      <Button fx:id="signupButton" layoutX="451.0" layoutY="292.0" onAction="#handleSignupButtonAction" style="-fx-background-color: #7690ff; -fx-border-color: #000;" text="Sign up" />
+   </children>
+</Pane>

@@ -63,7 +63,6 @@ javac --module-path "$PATH_TO_FX:$PATH_TO_GLISTEN_LIB" \
       src/Utils/JsonUtils.java \
       src/Utils/PasswordUtils.java
 
-
 # Check if compilation was successful
 if [ $? -ne 0 ]; then
     echo "Compilation failed."
@@ -74,6 +73,9 @@ echo "Compilation successful."
 
 # Copy Views directory to out for resource access
 cp -R src/Views out/
+
+# Copy Media directory to out for resource access
+cp -R src/Media out/
 
 # Run the application
 echo "Running the application..."
