@@ -11,21 +11,20 @@
         "deadline": "2025-02-21",
         "status": "Open",
         "reminders": []
+      },
+      {
+        "title": "rtetet",
+        "description": "etet",
+        "category": "Default Category",
+        "priority": "Default",
+        "deadline": "2025-01-15",
+        "status": "Open",
+        "reminders": []
       }
     ],
     "categories": [
-      "Default Category"
-    ],
-    "priorities": [
-      "Default"
-    ]
-  },
-  {
-    "username": "chrisss",
-    "passwordHash": "$2a$10$RcuX0ac1LUEZbzvjh0kLD.OEUVERY1cFFXiIKv5RwAPwyp4i9ZI8i",
-    "tasks": [],
-    "categories": [
-      "Default Category"
+      "Default Category",
+      "University"
     ],
     "priorities": [
       "Default"

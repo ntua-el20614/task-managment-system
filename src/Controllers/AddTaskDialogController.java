@@ -1,5 +1,6 @@
 package Controllers;
 
+import src.App;
 import Models.Task;
 import Models.User;
 import Utils.JsonUtils;
@@ -79,11 +80,12 @@ public class AddTaskDialogController {
      * @param user The current authenticated user.
      */
     public void setUser(User user) {
-        this.currentUser = user;
-    
-        // Refresh categories and priorities
+        // Refresh the current user data
+        App.refreshCurrentUser();
+        this.currentUser = App.getCurrentUser();
         refreshCategoriesAndPriorities();
     }
+
     
     /**
      * Refreshes the categories and priorities in the ComboBoxes.
