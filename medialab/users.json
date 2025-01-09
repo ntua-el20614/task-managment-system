@@ -1,47 +1,90 @@
 [
   {
     "username": "chris",
-    "passwordHash": "$2a$10$6SRoj03ib2UGP4ZtrpxhU.4Eb3o24dpuoFN0MaLU.4i0ZwezQ686C",
+    "passwordHash": "$2a$10$JM9XbuXoT4sQiNNxmekv.euliOXjOmOpR153bXtQvqpZFjudYxrpm",
     "tasks": [
       {
-        "id": "2a8c3983-9213-42bc-ae57-bcd5b85cdfeb",
-        "title": "polumesa",
-        "description": "",
-        "category": "University",
-        "priority": "Default",
+        "id": "ef7d77d2-3dd7-491a-b8ca-41b078038bc9",
+        "title": "SB-2164",
+        "description": "24 hour next matches, something gets re-rendered",
+        "category": "Work",
+        "priority": "Chill",
         "deadline": "2025-01-17",
         "status": "In Progress",
         "reminders": []
       },
       {
-        "id": "f476d743-87ab-42fb-aca8-a43ade5de5ea",
-        "title": "chara",
-        "description": "you have to do chara",
+        "id": "4cd332e0-2e2e-4963-a702-01e3903a9ced",
+        "title": "Web App",
+        "description": "Find if possible to extract from tableau to a webapp which will be more interractive",
+        "category": "Thesis",
+        "priority": "Default",
+        "deadline": "2025-01-15",
+        "status": "Open",
+        "reminders": []
+      },
+      {
+        "id": "f1ce29a4-1d5d-42dd-a054-34d3f0f4a3e9",
+        "title": "Filter Sound",
+        "description": "based on the .json files (or xslx now) that are the correct paths, you have to find a way to filter through prep and then make a new column saying why its green or why its cut out",
+        "category": "Thesis",
+        "priority": "Default",
+        "deadline": "2025-01-15",
+        "status": "Open",
+        "reminders": []
+      },
+      {
+        "id": "45e06222-8812-4b9b-9bc5-a9d10c4a17ed",
+        "title": "Multimedia",
+        "description": "Project for task managment",
         "category": "University",
-        "priority": "New",
+        "priority": "Chill",
+        "deadline": "2025-02-21",
+        "status": "In Progress",
+        "reminders": []
+      },
+      {
+        "id": "8e91c9db-ec71-4301-862b-53424a46e503",
+        "title": "dummy 1",
+        "description": "just a dummy to delete stuff",
+        "category": "Default Category",
+        "priority": "Default",
+        "deadline": "2025-01-08",
+        "status": "Postponed",
+        "reminders": []
+      },
+      {
+        "id": "7a82e8a3-edd9-4b02-908e-cb38cd6e330e",
+        "title": "dummy 2",
+        "description": "just a dummy you dummy",
+        "category": "Default Category",
+        "priority": "Default",
         "deadline": "2025-01-10",
         "status": "Delayed",
         "reminders": []
       },
       {
-        "id": "39f96ccd-02d6-475e-b7a6-96123d969d5c",
-        "title": "pedia b",
-        "description": "kame seira askisewn roumeliwti",
+        "id": "7f207e38-1abf-4b60-bc0f-8883230e0d89",
+        "title": "dummy 3",
+        "description": "the last one i swear",
         "category": "University",
-        "priority": "New",
-        "deadline": "2025-01-07",
-        "status": "Delayed",
+        "priority": "Urgent",
+        "deadline": "2025-01-31",
+        "status": "Completed",
         "reminders": []
       }
     ],
     "categories": [
       "Default Category",
       "University",
-      "New"
+      "Work",
+      "Thesis"
     ],
     "priorities": [
       "Default",
-      "New"
+      "Urgent",
+      "Can Wait",
+      "Chill"
     ]
   }
 ]
