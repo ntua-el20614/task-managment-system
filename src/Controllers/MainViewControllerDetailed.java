@@ -17,12 +17,13 @@ import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class MainViewController implements Initializable {
+public class MainViewControllerDetailed implements Initializable {
 
     @FXML
     private Label lblTotalTasks;
@@ -186,21 +187,33 @@ private void initializeColumn(ListView<Task> column, String status) {
 
 
     private void reloadTasks() {
-        // Refresh the taskList from the current user's tasks
-        taskList.setAll(currentUser.getTasks());
+        // Refresh the user data from the JSON file
+        User refreshedUser = JsonUtils.findUser(currentUser.getUsername());
+        if (refreshedUser != null) {
+            currentUser = refreshedUser; // Update current user with refreshed data
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to refresh user data.");
+            return;
+        }
 
+        // Update the task list from the current user's tasks
+        taskList.setAll(currentUser.getTasks());
+        System.out.println("Reloaded " + taskList.size() + " tasks.");
+
+        // Update the labels with refreshed counts
         lblTotalTasks.setText("Total Tasks: " + taskList.size());
         lblCompleted.setText("Completed: " + countTasksByStatus("Completed"));
         lblDelayed.setText("Delayed: " + countTasksByStatus("Delayed"));
         lblUpcoming.setText("Due within 7 days: " + countUpcomingTasks());
 
-        // Update each ListView with the filtered tasks
+        // Refresh each ListView with filtered tasks
         openList.getItems().setAll(filterTasksByStatus("Open"));
         inProgressList.getItems().setAll(filterTasksByStatus("In Progress"));
         postponedList.getItems().setAll(filterTasksByStatus("Postponed"));
         completedList.getItems().setAll(filterTasksByStatus("Completed"));
         delayedList.getItems().setAll(filterTasksByStatus("Delayed"));
     }
+
 
 
     private ObservableList<Task> filterTasksByStatus(String status) {
@@ -225,15 +238,33 @@ private void initializeColumn(ListView<Task> column, String status) {
 
     @FXML
     private void handleAddTask() {
-        // Reload user data to ensure we have the latest categories and priorities
-        User updatedUser = JsonUtils.findUser(currentUser.getUsername());
-        if (updatedUser != null) {
-            currentUser = updatedUser; // Update the current user
-        } else {
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load user data.");
-            return;
+        try {
+            // Reload user data to ensure the latest categories and priorities
+            User updatedUser = JsonUtils.findUser(currentUser.getUsername());
+            if (updatedUser != null) {
+                currentUser = updatedUser; // Update the current user
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to load user data.");
+                return;
+            }
+
+            // Create and show the AddTaskDialog
+            AddTaskDialog addTaskDialog = new AddTaskDialog(currentUser);
+            addTaskDialog.showAndWait(); // Display the dialog
+
+            // Check if a new task was added
+            Optional<Task> newTask = addTaskDialog.getNewTask();
+            if (newTask.isPresent()) {
+                currentUser.getTasks().add(newTask.get()); // Add the new task to the current user's tasks
+                JsonUtils.updateUser(currentUser); // Persist the changes to the JSON file
+                reloadTasks(); // Refresh the task list to show the new task
+            }
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to open Add Task dialog.");
+            e.printStackTrace();
         }
     }
+
     
     @FXML
     private void handleEditTask() {
@@ -280,7 +311,21 @@ private void initializeColumn(ListView<Task> column, String status) {
 
     @FXML
     private void handleSettings() {
-        // Implementation for opening settings dialog
+        try {
+            // Load the Settings view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/SettingsView.fxml"));
+            Parent root = loader.load();
+
+            // Configure the settings modal
+            Stage settingsStage = new Stage();
+            settingsStage.setTitle("Settings");
+            settingsStage.initModality(Modality.APPLICATION_MODAL);
+            settingsStage.setScene(new Scene(root));
+            settingsStage.showAndWait();
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to open the Settings dialog.");
+            e.printStackTrace();
+        }
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {

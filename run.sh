@@ -56,7 +56,9 @@ javac --module-path "$PATH_TO_FX:$PATH_TO_GLISTEN_LIB" \
       src/Controllers/EditTaskDialog.java \
       src/Controllers/EditTaskDialogController.java \
       src/Controllers/LoginViewController.java \
-      src/Controllers/MainViewController.java \
+      src/Controllers/MainControllerWrapper.java \
+      src/Controllers/MainViewControllerDetailed.java \
+      src/Controllers/MainViewListController.java \
       src/Controllers/SettingsViewController.java \
       src/Models/Task.java \
       src/Models/User.java \

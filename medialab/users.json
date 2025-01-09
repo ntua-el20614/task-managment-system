@@ -4,30 +4,44 @@
     "passwordHash": "$2a$10$6SRoj03ib2UGP4ZtrpxhU.4Eb3o24dpuoFN0MaLU.4i0ZwezQ686C",
     "tasks": [
       {
-        "title": "Polumesa",
-        "description": "A task managment project that has to be written in java",
-        "category": "Default Category",
+        "id": "2a8c3983-9213-42bc-ae57-bcd5b85cdfeb",
+        "title": "polumesa",
+        "description": "",
+        "category": "University",
         "priority": "Default",
-        "deadline": "2025-02-21",
-        "status": "Open",
+        "deadline": "2025-01-17",
+        "status": "In Progress",
         "reminders": []
       },
       {
-        "title": "rtetet",
-        "description": "etet",
-        "category": "Default Category",
-        "priority": "Default",
-        "deadline": "2025-01-15",
-        "status": "Open",
+        "id": "f476d743-87ab-42fb-aca8-a43ade5de5ea",
+        "title": "chara",
+        "description": "you have to do chara",
+        "category": "University",
+        "priority": "New",
+        "deadline": "2025-01-10",
+        "status": "Delayed",
+        "reminders": []
+      },
+      {
+        "id": "39f96ccd-02d6-475e-b7a6-96123d969d5c",
+        "title": "pedia b",
+        "description": "kame seira askisewn roumeliwti",
+        "category": "University",
+        "priority": "New",
+        "deadline": "2025-01-07",
+        "status": "Delayed",
         "reminders": []
       }
     ],
     "categories": [
       "Default Category",
-      "University"
+      "University",
+      "New"
     ],
     "priorities": [
-      "Default"
+      "Default",
+      "New"
     ]
   }
 ]
