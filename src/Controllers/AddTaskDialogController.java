@@ -131,6 +131,7 @@ public class AddTaskDialogController {
         String description = txtDescription.getText().trim();
         String category = cmbCategory.getValue();
         String priority = cmbPriority.getValue();
+        String status = Optional.ofNullable(cmbStatus.getValue()).orElse("Open");
         LocalDate deadline = dpDeadline.getValue();
 
         if (title.isEmpty() || deadline == null) {
@@ -143,7 +144,6 @@ public class AddTaskDialogController {
         }
 
         // Default status is "Open" if not provided
-        String status = "Open";
 
         newTask = new Task(title, description, category, priority, deadline.format(DateTimeFormatter.ISO_DATE), status);
 
