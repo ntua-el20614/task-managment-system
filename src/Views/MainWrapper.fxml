@@ -4,16 +4,34 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="rootPane" fx:controller="Controllers.MainControllerWrapper">
     <top>
-        <!-- Horizontal box for alignment -->
-        <HBox alignment="CENTER_RIGHT" spacing="10" style="-fx-padding: 10;">
-            <!-- StackPane for the square box -->
-            <StackPane fx:id="eyeContainer" style="-fx-border-color: black; -fx-border-width: 2; -fx-background-color: lightgray; -fx-pref-width: 50; -fx-pref-height: 50;" alignment="CENTER" onMouseClicked="#handleToggleView">
-                <ImageView fx:id="eyeToggle" fitWidth="30" fitHeight="30" />
-            </StackPane>
-        </HBox>
+        <StackPane>
+            <!-- Center the text -->
+            <Text fx:id="welcomeText" text="Welcome To TaskFlow!" style="
+                -fx-font-size: 28px;
+                -fx-font-weight: bold;
+                -fx-fill: navy;
+                -fx-stroke: black;
+                -fx-stroke-width: 1;
+                -fx-letter-spacing: 5px;
+                -fx-text-alignment: center;" />
+
+            <!-- Right-align the buttons -->
+            <HBox alignment="CENTER_RIGHT" spacing="10" style="-fx-padding: 10;" BorderPane.alignment="TOP_RIGHT">
+                <!-- Eye button -->
+                <StackPane fx:id="eyeContainer" style="-fx-border-color: black; -fx-border-width: 2; -fx-background-color: lightgray; -fx-pref-width: 50; -fx-pref-height: 50;" alignment="CENTER" onMouseClicked="#handleToggleView">
+                    <ImageView fx:id="eyeToggle" fitWidth="30" fitHeight="30" />
+                </StackPane>
+
+                <!-- Lock button -->
+                <StackPane fx:id="lockContainer" style="-fx-border-color: black; -fx-border-width: 2; -fx-background-color: lightgray; -fx-pref-width: 50; -fx-pref-height: 50;" alignment="CENTER" onMouseClicked="#handleLogout">
+                    <ImageView fx:id="lockToggle" fitWidth="30" fitHeight="30" />
+                </StackPane>
+            </HBox>
+        </StackPane>
     </top>
     <center>
         <!-- The dynamic content (Detailed or List View) will load here -->

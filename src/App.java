@@ -77,6 +77,12 @@ public class App extends Application {
     }
 
     /**
+     * get the current user's username
+     */
+    public static String getCurrentUsername() {
+        return currentUser != null ? currentUser.getUsername() : null;
+    }
+    /**
      * Refreshes the current user data.
      */
     public static void refreshCurrentUser() {

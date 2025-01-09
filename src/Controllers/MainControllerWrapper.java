@@ -9,7 +9,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -24,19 +27,34 @@ public class MainControllerWrapper {
     private ImageView eyeToggle; // ImageView for the eye icon
 
     @FXML
+    private ImageView lockToggle; // ImageView for the lock icon
+
+    @FXML
     private StackPane eyeContainer; // StackPane for the square box
+
+    @FXML
+    private StackPane lockContainer; // StackPane for the lock box
+
+    @FXML
+    private HBox buttonContainer; // Container for the buttons (aligned right)
+
+    @FXML
+    private Text welcomeText; // Text for the welcome message
 
     private boolean isDetailedView = true;
 
-    // Paths to the eye images in the Media/eye folder
+    // Paths to the eye and lock images
     private final Image openEyeImage = new Image(App.class.getResource("/Media/eye/open_eye.png").toExternalForm());
     private final Image closedEyeImage = new Image(App.class.getResource("/Media/eye/closed_eye.png").toExternalForm());
+    private final Image lockImage = new Image(App.class.getResource("/Media/lock.png").toExternalForm());
 
     @FXML
     public void initialize() {
         loadDetailedView(); // Set default view
         updateEyeIcon();    // Set the initial image
-        adjustEyeContainer(); // Adjust the layout programmatically if needed
+        setupLockIcon();    // Initialize the lock button
+        setupWelcomeMessage(); // Set the welcome message
+        adjustLayout(); // Adjust layout programmatically if needed
     }
 
     @FXML
@@ -96,8 +114,38 @@ public class MainControllerWrapper {
         fadeOut.play();
     }
 
-    private void adjustEyeContainer() {
-        // Optionally add margins or paddings if needed
-        StackPane.setMargin(eyeContainer, new Insets(10, 10, 0, 0));
+    private void setupLockIcon() {
+        // Set the initial lock image
+        lockToggle.setImage(lockImage);
+    }
+
+    private void setupWelcomeMessage() {
+        String currentUser = App.getCurrentUsername(); // Replace with actual method to fetch the username
+        welcomeText.setText("WELCOME TO TASKFLOW " + (currentUser != null ? currentUser.toUpperCase() : "GUEST") + "!");
+    }
+
+    private void adjustLayout() {
+        HBox.setMargin(eyeContainer, new Insets(0, 5, 0, 0));
+        HBox.setMargin(lockContainer, new Insets(0, 0, 0, 5));
+    }
+
+    public void handleLogout() {
+        System.out.println("Logout initiated. Scene: " + rootPane.getScene());
+        if (rootPane.getScene() != null) {
+            System.out.println("Window: " + rootPane.getScene().getWindow());
+        }
+        closeWindow();
+    }
+
+    public void closeWindow() {
+        if (rootPane.getScene() != null && rootPane.getScene().getWindow() != null) {
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            // Redirect to login page
+            App.showLoginView();
+
+            stage.hide();
+        } else {
+            System.err.println("Cannot close window: Scene or Window is null.");
+        }
     }
 }
