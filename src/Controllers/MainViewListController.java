@@ -91,7 +91,7 @@ public class MainViewListController implements Initializable {
         if (updatedUser != null) {
             currentUser = updatedUser; // Replace current user with updated data
             taskList.setAll(currentUser.getTasks());
-            System.out.println("I got " + taskList.size() + " tasks");
+            // System.out.println("I got " + taskList.size() + " tasks");
 
             updateAggregatedInfo();
         } else {

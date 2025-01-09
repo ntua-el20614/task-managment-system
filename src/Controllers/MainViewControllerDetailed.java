@@ -198,7 +198,7 @@ private void initializeColumn(ListView<Task> column, String status) {
 
         // Update the task list from the current user's tasks
         taskList.setAll(currentUser.getTasks());
-        System.out.println("Reloaded " + taskList.size() + " tasks.");
+        // System.out.println("Reloaded " + taskList.size() + " tasks.");
 
         // Update the labels with refreshed counts
         lblTotalTasks.setText("Total Tasks: " + taskList.size());
@@ -305,7 +305,7 @@ private void initializeColumn(ListView<Task> column, String status) {
 
     @FXML
     private void handleRefresh() {
-        System.out.println("Refreshing");
+        // System.out.println("Refreshing");
         reloadTasks();
     }
 
