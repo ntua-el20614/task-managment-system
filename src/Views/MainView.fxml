@@ -21,7 +21,31 @@
         </VBox>
     </top>
     <center>
-        <ListView fx:id="taskListView"/>
+        <HBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <VBox fx:id="openColumn" spacing="5" styleClass="status-column">
+                <Label text="Open"/>
+                <ListView fx:id="openList"/>
+            </VBox>
+            <VBox fx:id="inProgressColumn" spacing="5" styleClass="status-column">
+                <Label text="In Progress"/>
+                <ListView fx:id="inProgressList"/>
+            </VBox>
+            <VBox fx:id="postponedColumn" spacing="5" styleClass="status-column">
+                <Label text="Postponed"/>
+                <ListView fx:id="postponedList"/>
+            </VBox>
+            <VBox fx:id="delayedColumn" spacing="5" styleClass="status-column">
+                <Label text="Delayed"/>
+                <ListView fx:id="delayedList"/>
+            </VBox>
+            <VBox fx:id="completedColumn" spacing="5" styleClass="status-column">
+                <Label text="Completed"/>
+                <ListView fx:id="completedList"/>
+            </VBox>
+        </HBox>
     </center>
     <bottom>
         <HBox spacing="10">

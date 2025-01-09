@@ -57,8 +57,8 @@ public class AddTaskDialogController {
             "Open", 
             "In Progress", 
             "Postponed", 
-            "Completed", 
-            "Delayed"
+            "Delayed", 
+            "Completed"
         ));
     
         // Select the default value for the Status ComboBox

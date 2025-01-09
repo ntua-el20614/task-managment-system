@@ -1,5 +1,7 @@
 package Controllers;
 
+// package src.Controllers.MainViewController;
+
 import Models.Task;
 import Models.User;
 import javafx.collections.FXCollections;
@@ -90,54 +92,53 @@ public class EditTaskDialogController {
      */
     @FXML
     private void handleSave() {
-        String title = txtTitle.getText().trim();
-        String description = txtDescription.getText().trim();
-        String category = cmbCategory.getValue();
-        String priority = cmbPriority.getValue();
-        LocalDate deadline = dpDeadline.getValue();
+    String title = txtTitle.getText().trim();
+    String description = txtDescription.getText().trim();
+    String category = cmbCategory.getValue();
+    String priority = cmbPriority.getValue();
+    LocalDate deadline = dpDeadline.getValue();
 
-        if (title.isEmpty() || deadline == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Validation Error");
-            alert.setHeaderText("Invalid Input");
-            alert.setContentText("Title and Deadline are required!");
-            alert.showAndWait();
-            return;
-        }
-
-        // Default status is "Open" if not provided
-        String status = cmbStatus.getValue();
-
-        // Remove the old task
-        currentUser.getTasks().remove(taskToEdit);
-
-        // Create a new task with updated information
-        Task newTask = new Task(
-            title,
-            description,
-            category,
-            priority,
-            deadline.format(DateTimeFormatter.ISO_DATE),
-            status
-        );
-
-        // Add the new task to the current user's task list
-        currentUser.addTask(newTask);
-
-        // Persist the updated user data
-        JsonUtils.updateUser(currentUser);
-
-        // Log the operation for debugging
-        System.out.println("Deleted Task: " + taskToEdit);
-        System.out.println("Added New Task: " + newTask);
-
-        // Close the dialog
-        Stage stage = (Stage) btnSave.getScene().getWindow();
-        stage.close();
+    if (title.isEmpty() || deadline == null) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Validation Error");
+        alert.setHeaderText("Invalid Input");
+        alert.setContentText("Title and Deadline are required!");
+        alert.showAndWait();
+        return;
     }
 
+    // Default status is "Open" if not provided
+    String status = cmbStatus.getValue();
 
+    // Remove the old task
+    currentUser.getTasks().remove(taskToEdit);
 
+    // Create a new task with updated information
+    Task newTask = new Task(
+        title,
+        description,
+        category,
+        priority,
+        deadline.format(DateTimeFormatter.ISO_DATE),
+        status
+    );
+
+    // Add the new task to the current user's task list
+    currentUser.addTask(newTask);
+
+    // Persist the updated user data
+    JsonUtils.updateUser(currentUser);
+
+    // Log the operation for debugging
+    System.out.println("Deleted Task: " + taskToEdit);
+    System.out.println("Added New Task: " + newTask);
+
+    updatedTask = newTask; // Save the updated task for the calling controller
+
+    // Close the dialog
+    Stage stage = (Stage) btnSave.getScene().getWindow();
+    stage.close();
+    }
 
     /**
      * Handles the action when the "Cancel" button is pressed.

@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Task.java
@@ -12,6 +13,7 @@ import java.util.List;
  * Represents a task with various attributes.
  */
 public class Task {
+    private String id; // Unique identifier
     private String title;
     private String description;
     private String category;
@@ -22,10 +24,12 @@ public class Task {
 
     // Constructors
     public Task() {
+        this.id = UUID.randomUUID().toString(); // Generate a unique ID
         this.reminders = new ArrayList<>();
     }
 
     public Task(String title, String description, String category, String priority, String deadline, String status) {
+        this.id = UUID.randomUUID().toString(); // Generate a unique ID
         this.title = title;
         this.description = description;
         this.category = category;
@@ -44,20 +48,23 @@ public class Task {
             this.status = "Delayed";
         }
     }
+
     // Getters and Setters
-    // (Ensure all fields have corresponding getters and setters.)
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
     }
 
-    // ... [Other getters and setters] ...
-
     public void setTitle(String title) {
         this.title = title;
     }
-
-    // ... [Other setters] ...
 
     public String getDescription() {
         return description;
