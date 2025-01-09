@@ -76,6 +76,20 @@ public class App extends Application {
         return currentUser;
     }
 
+    /**
+     * Refreshes the current user data.
+     */
+    public static void refreshCurrentUser() {
+    if (currentUser != null) {
+        // Use the existing JsonUtils.findUser() to reload the current user data
+        User updatedUser = JsonUtils.findUser(currentUser.getUsername());
+        if (updatedUser != null) {
+            currentUser = updatedUser;
+        }
+    }
+    }
+
+
     @Override
     public void stop() {
         if (currentUser != null) {

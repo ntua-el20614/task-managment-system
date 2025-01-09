@@ -53,6 +53,10 @@ public class SettingsViewController {
      */
     @FXML
     private void handleNewCategory() {
+        
+        App.refreshCurrentUser();
+        currentUser = App.getCurrentUser();
+
         ObservableList<String> categories = FXCollections.observableArrayList(currentUser.getCategories());
         manageItems("Category", categories, "Default Category");
 
@@ -67,6 +71,10 @@ public class SettingsViewController {
      */
     @FXML
     private void handleNewPriority() {
+        
+        App.refreshCurrentUser();
+        currentUser = App.getCurrentUser();
+
         ObservableList<String> priorities = FXCollections.observableArrayList(currentUser.getPriorities());
         manageItems("Priority", priorities, "Default");
 

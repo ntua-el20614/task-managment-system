@@ -1,5 +1,6 @@
 package Controllers;
 
+import src.App;
 import Models.Task;
 import Models.User;
 import Utils.JsonUtils;
@@ -79,11 +80,12 @@ public class AddTaskDialogController {
      * @param user The current authenticated user.
      */
     public void setUser(User user) {
-        this.currentUser = user;
-    
-        // Refresh categories and priorities
+        // Refresh the current user data
+        App.refreshCurrentUser();
+        this.currentUser = App.getCurrentUser();
         refreshCategoriesAndPriorities();
     }
+
     
     /**
      * Refreshes the categories and priorities in the ComboBoxes.
@@ -129,6 +131,7 @@ public class AddTaskDialogController {
         String description = txtDescription.getText().trim();
         String category = cmbCategory.getValue();
         String priority = cmbPriority.getValue();
+        String status = Optional.ofNullable(cmbStatus.getValue()).orElse("Open");
         LocalDate deadline = dpDeadline.getValue();
 
         if (title.isEmpty() || deadline == null) {
@@ -141,7 +144,6 @@ public class AddTaskDialogController {
         }
 
         // Default status is "Open" if not provided
-        String status = "Open";
 
         newTask = new Task(title, description, category, priority, deadline.format(DateTimeFormatter.ISO_DATE), status);
 
