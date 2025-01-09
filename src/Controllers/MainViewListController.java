@@ -77,7 +77,7 @@ public class MainViewListController implements Initializable {
                 if (empty || task == null) {
                     setText(null);
                 } else {
-                    setText(task.getTitle() + " [" + task.getStatus() + "]");
+                    setText(String.format("%-20s %-30s %-30s %-30s", task.getTitle(), task.getCategory(), "[" + task.getStatus() + "]", task.getDescription()));
                 }
             }
         });

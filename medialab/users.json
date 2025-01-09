@@ -44,16 +44,6 @@
         "reminders": []
       },
       {
-        "id": "8e91c9db-ec71-4301-862b-53424a46e503",
-        "title": "dummy 1",
-        "description": "just a dummy to delete stuff",
-        "category": "Default Category",
-        "priority": "Default",
-        "deadline": "2025-01-08",
-        "status": "Postponed",
-        "reminders": []
-      },
-      {
         "id": "7a82e8a3-edd9-4b02-908e-cb38cd6e330e",
         "title": "dummy 2",
         "description": "just a dummy you dummy",
@@ -71,6 +61,16 @@
         "priority": "Urgent",
         "deadline": "2025-01-31",
         "status": "Completed",
+        "reminders": []
+      },
+      {
+        "id": "1775ced0-f593-423d-9a89-b258bb21d9ff",
+        "title": "dummy 1",
+        "description": "just a dummy to delete stuff",
+        "category": "Work",
+        "priority": "Default",
+        "deadline": "2025-01-08",
+        "status": "Delayed",
         "reminders": []
       }
     ],
