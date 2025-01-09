@@ -74,11 +74,29 @@ public class MainViewListController implements Initializable {
             @Override
             protected void updateItem(Task task, boolean empty) {
                 super.updateItem(task, empty);
-                if (empty || task == null) {
-                    setText(null);
-                } else {
-                    setText(String.format("%-20s %-30s %-30s %-30s", task.getTitle(), task.getCategory(), "[" + task.getStatus() + "]", task.getDescription()));
-                }
+if (empty || task == null) {
+    setText(null);
+} else {
+    // Truncate strings to avoid excessively long inputs
+    String truncatedCategory = task.getCategory().length() > 50 ? task.getCategory().substring(0, 50) : task.getCategory();
+    String truncatedStatus = "[" + task.getStatus() + "]";
+    String truncatedDescription = task.getDescription().length() > 50 ? task.getDescription().substring(0, 50) + "..." : task.getDescription();
+
+    // Calculate padding and ensure a minimum width of 1
+    int categoryPadding = Math.max(1, 50 - truncatedCategory.length());
+    String paddedCategory = String.format("%-" + categoryPadding + "s", truncatedCategory);
+
+    int statusPadding = Math.max(1, 60 - truncatedStatus.length());
+    String paddedStatus = String.format("%-" + statusPadding + "s", truncatedStatus);
+
+    // Format the final string
+    setText(String.format("%-30s %s %s %s", task.getTitle(), paddedCategory, paddedStatus, truncatedDescription));
+
+}
+
+
+
+
             }
         });
 
