@@ -80,15 +80,15 @@ if (empty || task == null) {
     setText(null);
 } else {
     // Truncate strings to avoid excessively long inputs
-    String truncatedCategory = task.getCategory().length() > 50 ? task.getCategory().substring(0, 50) : task.getCategory();
+    String truncatedCategory = task.getCategory().length() > 45 ? task.getCategory().substring(0, 45) : task.getCategory();
     String truncatedStatus = "[" + task.getStatus() + "]";
-    String truncatedDescription = task.getDescription().length() > 50 ? task.getDescription().substring(0, 50) + "..." : task.getDescription();
+    String truncatedDescription = task.getDescription().length() > 45 ? task.getDescription().substring(0, 45) + "..." : task.getDescription();
 
     // Calculate padding and ensure a minimum width of 1
     int categoryPadding = Math.max(1, 50 - truncatedCategory.length());
     String paddedCategory = String.format("%-" + categoryPadding + "s", truncatedCategory);
 
-    int statusPadding = Math.max(1, 60 - truncatedStatus.length());
+    int statusPadding = Math.max(1, 45 - truncatedStatus.length());
     String paddedStatus = String.format("%-" + statusPadding + "s", truncatedStatus);
 
     // Format the final string
