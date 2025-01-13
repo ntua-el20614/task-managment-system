@@ -1,18 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.geometry.Insets?>
-
 
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.SettingsViewController" spacing="10">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
-    <Label text="Settings"/>
-    <Button fx:id="btnNewCategory" text="Manage Categories" onAction="#handleNewCategory"/>
-    <Button fx:id="btnNewPriority" text="Manage Priorities" onAction="#handleNewPriority"/>
-    <Button fx:id="btnLogout" text="Logout" onAction="#handleLogout"/>
-    <Button fx:id="btnClose" text="Close" onAction="#handleClose"/>
+    <Label text="Categories"/>
+    <ListView fx:id="listViewCategories" prefHeight="150"/>
+    <HBox spacing="10">
+        <TextField fx:id="inputNewCategory" promptText="New Category"/>
+        <Button fx:id="btnAddCategory" text="Add" onAction="#handleAddCategory"/>
+    </HBox>
+    <HBox spacing="10">
+        <Button fx:id="btnRenameCategory" text="Rename" onAction="#handleRenameCategory"/>
+        <Button fx:id="btnDeleteCategory" text="Delete" onAction="#handleDeleteCategory"/>
+    </HBox>
+
+    <Label text="Priorities"/>
+    <ListView fx:id="listViewPriorities" prefHeight="150"/>
+    <HBox spacing="10">
+        <TextField fx:id="inputNewPriority" promptText="New Priority"/>
+        <Button fx:id="btnAddPriority" text="Add" onAction="#handleAddPriority"/>
+    </HBox>
+    <HBox spacing="10">
+        <Button fx:id="btnRenamePriority" text="Rename" onAction="#handleRenamePriority"/>
+        <Button fx:id="btnDeletePriority" text="Delete" onAction="#handleDeletePriority"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Button fx:id="btnLogout" text="Logout" onAction="#handleLogout"/>
+        <Button fx:id="btnClose" text="Close" onAction="#handleClose"/>
+    </HBox>
 </VBox>
