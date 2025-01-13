@@ -197,28 +197,97 @@ public class SettingsViewController {
 
     @FXML
     private void handleRenamePriority() {
-        String selectedPriority = listViewPriorities.getSelectionModel().getSelectedItem();
-        TextInputDialog dialog = new TextInputDialog(selectedPriority);
-        dialog.setTitle("Rename Priority");
-        dialog.setHeaderText("Rename the selected priority");
-        dialog.setContentText("New name:");
+    String selectedPriority = listViewPriorities.getSelectionModel().getSelectedItem();
 
-        Optional<String> result = dialog.showAndWait();
-        result.ifPresent(newName -> {
-            if (!newName.isEmpty() && !listViewPriorities.getItems().contains(newName)) {
-                listViewPriorities.getItems().set(listViewPriorities.getSelectionModel().getSelectedIndex(), newName);
-                updateUserPriorities();
-            } else {
-                showAlert(Alert.AlertType.WARNING, "Invalid Name", "The new priority name is invalid or already exists.");
-            }
-        });
+    if (selectedPriority == null) {
+        showAlert(Alert.AlertType.WARNING, "No Priority Selected", "Please select a priority to rename.");
+        return;
     }
+
+    TextInputDialog dialog = new TextInputDialog(selectedPriority);
+    dialog.setTitle("Rename Priority");
+    dialog.setHeaderText("Rename the selected priority");
+    dialog.setContentText("New name:");
+
+    Optional<String> result = dialog.showAndWait();
+    result.ifPresent(newName -> {
+        if (!newName.isEmpty() && !listViewPriorities.getItems().contains(newName)) {
+            // Update the priority in the list
+            listViewPriorities.getItems().set(listViewPriorities.getSelectionModel().getSelectedIndex(), newName);
+
+            // Update tasks with the old priority to the new priority
+            currentUser.getTasks().forEach(task -> {
+                if (task.getPriority().equals(selectedPriority)) {
+                    task.setPriority(newName);
+                }
+            });
+
+            // Persist changes
+            updateUserPriorities();
+            JsonUtils.updateUser(currentUser);
+
+            // Show success message
+            showAlert(Alert.AlertType.INFORMATION, "Priority Renamed",
+                "The priority and its associated tasks have been successfully renamed.");
+
+            // Trigger the callback to refresh tasks in the main view
+            if (onSettingsChangedCallback != null) {
+                onSettingsChangedCallback.accept(null);
+            }
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Invalid Name", "The new priority name is invalid or already exists.");
+        }
+    });
+    }
+
 
     @FXML
     private void handleDeletePriority() {
-        listViewPriorities.getItems().remove(listViewPriorities.getSelectionModel().getSelectedItem());
-        updateUserPriorities();
+    String selectedPriority = listViewPriorities.getSelectionModel().getSelectedItem();
+
+    if (selectedPriority == null) {
+        showAlert(Alert.AlertType.WARNING, "No Priority Selected", "Please select a priority to delete.");
+        return;
     }
+
+    if (selectedPriority.equals("Default")) {
+        showAlert(Alert.AlertType.WARNING, "Cannot Delete Default Priority", "The default priority cannot be deleted.");
+        return;
+    }
+
+    // Confirmation dialog
+    Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+    confirm.setTitle("Delete Priority");
+    confirm.setHeaderText("Are you sure you want to delete the priority: " + selectedPriority + "?");
+    confirm.setContentText("All tasks with this priority will be reassigned to 'Default'.");
+
+    Optional<ButtonType> response = confirm.showAndWait();
+    if (response.isPresent() && response.get() == ButtonType.OK) {
+        // Remove the priority from the list
+        listViewPriorities.getItems().remove(selectedPriority);
+
+        // Update tasks to reassign the priority to "Default"
+        currentUser.getTasks().forEach(task -> {
+            if (task.getPriority().equals(selectedPriority)) {
+                task.setPriority("Default");
+            }
+        });
+
+        // Persist changes
+        updateUserPriorities();
+        JsonUtils.updateUser(currentUser);
+
+        // Show success message
+        showAlert(Alert.AlertType.INFORMATION, "Priority Deleted",
+            "The priority has been deleted and all associated tasks have been reassigned to 'Default'.");
+
+        // Trigger the callback to refresh tasks in the main view
+        if (onSettingsChangedCallback != null) {
+            onSettingsChangedCallback.accept(null);
+        }
+    }
+    }
+
 
     private void updateUserCategories() {
         currentUser.getCategories().clear();
