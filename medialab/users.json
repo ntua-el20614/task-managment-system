@@ -72,6 +72,16 @@
         "deadline": "2025-01-08",
         "status": "Delayed",
         "reminders": []
+      },
+      {
+        "id": "82334964-8734-4dc2-840c-c0349312ed63",
+        "title": "Exam",
+        "description": "Study for Multimedia (pc labs)",
+        "category": "University",
+        "priority": "Urgent",
+        "deadline": "2025-01-15",
+        "status": "Open",
+        "reminders": []
       }
     ],
     "categories": [
