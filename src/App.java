@@ -1,5 +1,6 @@
 package src;
 
+import Models.Task;
 import Models.User;
 import Utils.JsonUtils;
 import javafx.application.Application;
@@ -10,11 +11,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/**
- * App.java
- * 
- * Entry point for the MediaLab Assistant JavaFX application.
- */
 public class App extends Application {
 
     private static Stage primaryStage;
@@ -23,17 +19,32 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         primaryStage = stage;
+
+        // Validate delayed tasks at program start
+        if (currentUser != null) {
+            validateDelayedTasks();
+        }
+
         showLoginView();
     }
 
     /**
-     * Shows the Login view.
+     * Checks and marks tasks as delayed for the current user.
      */
+    private void validateDelayedTasks() {
+        if (currentUser != null) {
+            for (Task task : currentUser.getTasks()) {
+                task.validateStatus();
+            }
+            JsonUtils.updateUser(currentUser); // Persist the changes
+        }
+    }
+
     public static void showLoginView() {
         try {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("/Views/LoginView.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 600, 343); // Adjusted dimensions for better visibility
+            Scene scene = new Scene(root, 600, 343);
             primaryStage.setTitle("MediaLab Assistant - Login");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -42,14 +53,11 @@ public class App extends Application {
         }
     }
 
-    /**
-     * Shows the Main application view after successful login.
-     */
     public static void showMainView() {
         try {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("/Views/MainWrapper.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 800, 600); // Adjust dimensions as needed
+            Scene scene = new Scene(root, 800, 600);
             primaryStage.setTitle("MediaLab Assistant");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -58,43 +66,26 @@ public class App extends Application {
         }
     }
 
-    /**
-     * Sets the current user after successful login.
-     * 
-     * @param user The authenticated user.
-     */
     public static void setCurrentUser(User user) {
         currentUser = user;
     }
 
-    /**
-     * Gets the current authenticated user.
-     * 
-     * @return The current user.
-     */
     public static User getCurrentUser() {
         return currentUser;
     }
 
-    /**
-     * get the current user's username
-     */
     public static String getCurrentUsername() {
         return currentUser != null ? currentUser.getUsername() : null;
     }
-    /**
-     * Refreshes the current user data.
-     */
+
     public static void refreshCurrentUser() {
-    if (currentUser != null) {
-        // Use the existing JsonUtils.findUser() to reload the current user data
-        User updatedUser = JsonUtils.findUser(currentUser.getUsername());
-        if (updatedUser != null) {
-            currentUser = updatedUser;
+        if (currentUser != null) {
+            User updatedUser = JsonUtils.findUser(currentUser.getUsername());
+            if (updatedUser != null) {
+                currentUser = updatedUser;
+            }
         }
     }
-    }
-
 
     @Override
     public void stop() {
@@ -106,9 +97,8 @@ public class App extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
     public static Stage getStage() {
         return primaryStage;
     }
-
 }
