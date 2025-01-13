@@ -10,24 +10,50 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
+import java.util.function.Consumer;
 import java.util.Optional;
-
+import Models.Task;
 public class SettingsViewController {
 
     @FXML
     private Button btnLogout;
 
     @FXML
-    private Button btnNewCategory;
-
-    @FXML
-    private Button btnNewPriority;
-
-    @FXML
     private Button btnClose;
 
+    @FXML
+    private ListView<String> listViewCategories;
+
+    @FXML
+    private ListView<String> listViewPriorities;
+
+    @FXML
+    private TextField inputNewCategory;
+
+    @FXML
+    private TextField inputNewPriority;
+
+    @FXML
+    private Button btnAddCategory;
+
+    @FXML
+    private Button btnRenameCategory;
+
+    @FXML
+    private Button btnDeleteCategory;
+
+    @FXML
+    private Button btnAddPriority;
+
+    @FXML
+    private Button btnRenamePriority;
+
+    @FXML
+    private Button btnDeletePriority;
+
     private User currentUser;
+
+    private Consumer<Void> onSettingsChangedCallback;
 
     @FXML
     public void initialize() {
@@ -35,131 +61,268 @@ public class SettingsViewController {
         if (currentUser == null) {
             showAlert(Alert.AlertType.ERROR, "Error", "No user is logged in.");
             closeWindow();
+            return;
+        }
+
+        // Initialize category and priority lists
+        refreshLists();
+        setUpButtonBindings();
+    }
+
+    private void refreshLists() {
+        ObservableList<String> categories = FXCollections.observableArrayList(currentUser.getCategories());
+        ObservableList<String> priorities = FXCollections.observableArrayList(currentUser.getPriorities());
+
+        listViewCategories.setItems(categories);
+        listViewPriorities.setItems(priorities);
+    }
+
+    private void setUpButtonBindings() {
+        btnRenameCategory.disableProperty().bind(listViewCategories.getSelectionModel().selectedItemProperty().isNull());
+        btnDeleteCategory.disableProperty().bind(listViewCategories.getSelectionModel().selectedItemProperty().isNull());
+
+        btnRenamePriority.disableProperty().bind(listViewPriorities.getSelectionModel().selectedItemProperty().isNull());
+        btnDeletePriority.disableProperty().bind(listViewPriorities.getSelectionModel().selectedItemProperty().isNull());
+    }
+
+    @FXML
+    private void handleAddCategory() {
+        String newCategory = inputNewCategory.getText().trim();
+        if (newCategory.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Invalid Input", "Category name cannot be empty.");
+        } else if (listViewCategories.getItems().contains(newCategory)) {
+            showAlert(Alert.AlertType.WARNING, "Duplicate Category", "This category already exists.");
+        } else {
+            listViewCategories.getItems().add(newCategory);
+            inputNewCategory.clear();
+            updateUserCategories();
         }
     }
 
-    /**
-     * Handles logging out the user and returning to the login view.
-     */
+    @FXML
+    private void handleRenameCategory() {
+    String selectedCategory = listViewCategories.getSelectionModel().getSelectedItem();
+    TextInputDialog dialog = new TextInputDialog(selectedCategory);
+    dialog.setTitle("Rename Category");
+    dialog.setHeaderText("Rename the selected category");
+    dialog.setContentText("New name:");
+
+    Optional<String> result = dialog.showAndWait();
+    result.ifPresent(newName -> {
+        if (!newName.isEmpty() && !listViewCategories.getItems().contains(newName)) {
+            // Update category in the list
+            listViewCategories.getItems().set(listViewCategories.getSelectionModel().getSelectedIndex(), newName);
+
+            // Update tasks with the old category to the new category
+            currentUser.getTasks().forEach(task -> {
+                if (task.getCategory().equals(selectedCategory)) {
+                    task.setCategory(newName);
+                }
+            });
+
+            // Update the user data and persist changes
+            updateUserCategories();
+            JsonUtils.updateUser(currentUser);
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Invalid Name", "The new category name is invalid or already exists.");
+        }
+    });
+    }
+
+    @FXML
+    private void handleDeleteCategory() {
+    String selectedCategory = listViewCategories.getSelectionModel().getSelectedItem();
+
+    if (selectedCategory == null) {
+        showAlert(Alert.AlertType.WARNING, "No Category Selected", "Please select a category to delete.");
+        return;
+    }
+
+    // Collect tasks associated with the selected category
+    ObservableList<Task> tasksToDelete = FXCollections.observableArrayList(
+        currentUser.getTasks().stream()
+            .filter(task -> task.getCategory().equals(selectedCategory))
+            .toList()
+    );
+
+    // Create a confirmation dialog with a list of tasks to delete
+    Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+    confirm.setTitle("Delete Category");
+    confirm.setHeaderText("Are you sure you want to delete the category: " + selectedCategory + "?");
+    confirm.setContentText("The following tasks will also be deleted:\n\n" +
+        tasksToDelete.stream()
+            .map(Task::getTitle) // Assuming Task has a getTitle() method
+            .reduce("", (a, b) -> a + "- " + b + "\n")
+    );
+
+    Optional<ButtonType> response = confirm.showAndWait();
+    if (response.isPresent() && response.get() == ButtonType.OK) {
+        // Remove the category
+        listViewCategories.getItems().remove(selectedCategory);
+
+        // Remove tasks associated with the deleted category
+        currentUser.getTasks().removeIf(task -> task.getCategory().equals(selectedCategory));
+
+        // Persist changes
+        updateUserCategories();
+        JsonUtils.updateUser(currentUser);
+
+        // Invoke the callback to reload tasks in the main view
+        if (onSettingsChangedCallback != null) {
+            onSettingsChangedCallback.accept(null);
+        }
+
+        // Show success message
+        showAlert(Alert.AlertType.INFORMATION, "Category Deleted", 
+            "The category and its associated tasks have been successfully deleted.");
+    }
+    }
+
+
+
+
+    @FXML
+    private void handleAddPriority() {
+        String newPriority = inputNewPriority.getText().trim();
+        if (newPriority.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Invalid Input", "Priority name cannot be empty.");
+        } else if (listViewPriorities.getItems().contains(newPriority)) {
+            showAlert(Alert.AlertType.WARNING, "Duplicate Priority", "This priority already exists.");
+        } else {
+            listViewPriorities.getItems().add(newPriority);
+            inputNewPriority.clear();
+            updateUserPriorities();
+        }
+    }
+
+    @FXML
+    private void handleRenamePriority() {
+    String selectedPriority = listViewPriorities.getSelectionModel().getSelectedItem();
+
+    if (selectedPriority == null) {
+        showAlert(Alert.AlertType.WARNING, "No Priority Selected", "Please select a priority to rename.");
+        return;
+    }
+
+    TextInputDialog dialog = new TextInputDialog(selectedPriority);
+    dialog.setTitle("Rename Priority");
+    dialog.setHeaderText("Rename the selected priority");
+    dialog.setContentText("New name:");
+
+    Optional<String> result = dialog.showAndWait();
+    result.ifPresent(newName -> {
+        if (!newName.isEmpty() && !listViewPriorities.getItems().contains(newName)) {
+            // Update the priority in the list
+            listViewPriorities.getItems().set(listViewPriorities.getSelectionModel().getSelectedIndex(), newName);
+
+            // Update tasks with the old priority to the new priority
+            currentUser.getTasks().forEach(task -> {
+                if (task.getPriority().equals(selectedPriority)) {
+                    task.setPriority(newName);
+                }
+            });
+
+            // Persist changes
+            updateUserPriorities();
+            JsonUtils.updateUser(currentUser);
+
+            // Show success message
+            showAlert(Alert.AlertType.INFORMATION, "Priority Renamed",
+                "The priority and its associated tasks have been successfully renamed.");
+
+            // Trigger the callback to refresh tasks in the main view
+            if (onSettingsChangedCallback != null) {
+                onSettingsChangedCallback.accept(null);
+            }
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Invalid Name", "The new priority name is invalid or already exists.");
+        }
+    });
+    }
+
+
+    @FXML
+    private void handleDeletePriority() {
+    String selectedPriority = listViewPriorities.getSelectionModel().getSelectedItem();
+
+    if (selectedPriority == null) {
+        showAlert(Alert.AlertType.WARNING, "No Priority Selected", "Please select a priority to delete.");
+        return;
+    }
+
+    if (selectedPriority.equals("Default")) {
+        showAlert(Alert.AlertType.WARNING, "Cannot Delete Default Priority", "The default priority cannot be deleted.");
+        return;
+    }
+
+    // Confirmation dialog
+    Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+    confirm.setTitle("Delete Priority");
+    confirm.setHeaderText("Are you sure you want to delete the priority: " + selectedPriority + "?");
+    confirm.setContentText("All tasks with this priority will be reassigned to 'Default'.");
+
+    Optional<ButtonType> response = confirm.showAndWait();
+    if (response.isPresent() && response.get() == ButtonType.OK) {
+        // Remove the priority from the list
+        listViewPriorities.getItems().remove(selectedPriority);
+
+        // Update tasks to reassign the priority to "Default"
+        currentUser.getTasks().forEach(task -> {
+            if (task.getPriority().equals(selectedPriority)) {
+                task.setPriority("Default");
+            }
+        });
+
+        // Persist changes
+        updateUserPriorities();
+        JsonUtils.updateUser(currentUser);
+
+        // Show success message
+        showAlert(Alert.AlertType.INFORMATION, "Priority Deleted",
+            "The priority has been deleted and all associated tasks have been reassigned to 'Default'.");
+
+        // Trigger the callback to refresh tasks in the main view
+        if (onSettingsChangedCallback != null) {
+            onSettingsChangedCallback.accept(null);
+        }
+    }
+    }
+
+
+    private void updateUserCategories() {
+        currentUser.getCategories().clear();
+        currentUser.getCategories().addAll(listViewCategories.getItems());
+        JsonUtils.updateUser(currentUser);
+    }
+
+    private void updateUserPriorities() {
+        currentUser.getPriorities().clear();
+        currentUser.getPriorities().addAll(listViewPriorities.getItems());
+        JsonUtils.updateUser(currentUser);
+    }
+
     @FXML
     private void handleLogout() {
         App.setCurrentUser(null);
-        App.showLoginView(); // Redirect to login
-        closeWindow(); // Close the settings modal
+        App.showLoginView();
+        closeWindow();
     }
 
-    /**
-     * Handles managing categories.
-     */
-    @FXML
-    private void handleNewCategory() {
-        
-        App.refreshCurrentUser();
-        currentUser = App.getCurrentUser();
-
-        ObservableList<String> categories = FXCollections.observableArrayList(currentUser.getCategories());
-        manageItems("Category", categories, "Default Category");
-
-        // Update user's categories after the dialog
-        currentUser.getCategories().clear();
-        currentUser.getCategories().addAll(categories);
-        JsonUtils.updateUser(currentUser);
-    }
-
-    /**
-     * Handles managing priorities.
-     */
-    @FXML
-    private void handleNewPriority() {
-        
-        App.refreshCurrentUser();
-        currentUser = App.getCurrentUser();
-
-        ObservableList<String> priorities = FXCollections.observableArrayList(currentUser.getPriorities());
-        manageItems("Priority", priorities, "Default");
-
-        // Update user's priorities after the dialog
-        currentUser.getPriorities().clear();
-        currentUser.getPriorities().addAll(priorities);
-        JsonUtils.updateUser(currentUser);
-    }
-
-    /**
-     * Manages categories or priorities by allowing the user to view, add, or remove them.
-     *
-     * @param itemType    The type of item (Category or Priority).
-     * @param items       The list of items (categories or priorities).
-     * @param defaultItem The default item that cannot be deleted.
-     */
-    private void manageItems(String itemType, ObservableList<String> items, String defaultItem) {
-        Dialog<String> dialog = new Dialog<>();
-        dialog.setTitle("Manage " + itemType + "s");
-        dialog.setHeaderText("View, add, or remove " + itemType.toLowerCase() + "s");
-
-        // Set up dialog components
-        ListView<String> listView = new ListView<>(items);
-        listView.setPrefHeight(200);
-        TextField inputField = new TextField();
-        inputField.setPromptText("New " + itemType);
-        Button addButton = new Button("Add");
-        Button removeButton = new Button("Remove");
-
-        // Disable remove button if no item is selected
-        removeButton.disableProperty().bind(listView.getSelectionModel().selectedItemProperty().isNull());
-
-        // Add button action
-        addButton.setOnAction(event -> {
-            String newItem = inputField.getText().trim();
-            if (newItem.isEmpty()) {
-                showAlert(Alert.AlertType.WARNING, "Invalid Input", "The " + itemType.toLowerCase() + " name cannot be empty.");
-            } else if (items.contains(newItem)) {
-                showAlert(Alert.AlertType.WARNING, "Duplicate " + itemType, "This " + itemType.toLowerCase() + " already exists.");
-            } else {
-                items.add(newItem);
-                inputField.clear();
-            }
-        });
-
-        // Remove button action
-        removeButton.setOnAction(event -> {
-            String selectedItem = listView.getSelectionModel().getSelectedItem();
-            if (selectedItem.equals(defaultItem)) {
-                showAlert(Alert.AlertType.WARNING, "Restricted", "The default " + itemType.toLowerCase() + " cannot be deleted.");
-            } else {
-                items.remove(selectedItem);
-            }
-        });
-
-        // Set up dialog layout
-        VBox content = new VBox(10);
-        content.getChildren().addAll(listView, inputField, new HBox(10, addButton, removeButton));
-        dialog.getDialogPane().setContent(content);
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
-
-        // Show the dialog
-        dialog.showAndWait();
-    }
-
-    /**
-     * Closes the settings modal.
-     */
     @FXML
     private void handleClose() {
         closeWindow();
     }
 
     private void closeWindow() {
+        if (onSettingsChangedCallback != null) {
+            onSettingsChangedCallback.accept(null);
+        }
         Stage stage = (Stage) btnClose.getScene().getWindow();
         stage.close();
     }
 
-    /**
-     * Shows an alert dialog with the specified type, title, and message.
-     *
-     * @param type    the alert type
-     * @param title   the alert title
-     * @param message the alert message
-     */
+
+
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -167,4 +330,13 @@ public class SettingsViewController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+    /**
+     * Sets the callback to be executed when settings change.
+     *
+     * @param onSettingsChangedCallback The callback function.
+     */
+    public void setOnSettingsChangedCallback(Consumer<Void> onSettingsChangedCallback) {
+        this.onSettingsChangedCallback = onSettingsChangedCallback;
+    }
+
 }

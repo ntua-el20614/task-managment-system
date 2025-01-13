@@ -250,24 +250,34 @@ if (empty || task == null) {
         reloadTasks(); // Refresh the task list
     }
     
-
     @FXML
     private void handleSettings() {
-        try {
-            // Load the Settings view
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/SettingsView.fxml"));
-            Parent root = loader.load();
+    try {
+        // Load the Settings view
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/SettingsView.fxml"));
+        Parent root = loader.load();
 
-            // Configure the settings modal
-            Stage settingsStage = new Stage();
-            settingsStage.setTitle("Settings");
-            settingsStage.initModality(Modality.APPLICATION_MODAL);
-            settingsStage.setScene(new Scene(root));
-            settingsStage.showAndWait();
-        } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to open the Settings dialog.");
-            e.printStackTrace();
-        }
+        // Retrieve the SettingsViewController
+        SettingsViewController controller = loader.getController();
+
+        // Set the callback to reload tasks when settings change
+        controller.setOnSettingsChangedCallback(ignored -> reloadTasks());
+
+        // Configure the settings modal
+        Stage settingsStage = new Stage();
+        settingsStage.setTitle("Settings");
+        settingsStage.initModality(Modality.APPLICATION_MODAL);
+        settingsStage.setScene(new Scene(root));
+
+        // Show the settings modal and wait for it to close
+        settingsStage.showAndWait();
+
+        // Explicitly reload tasks after the settings modal is closed
+        reloadTasks();
+    } catch (Exception e) {
+        showAlert(Alert.AlertType.ERROR, "Error", "Failed to open the Settings dialog.");
+        e.printStackTrace();
+    }
     }
 
 
