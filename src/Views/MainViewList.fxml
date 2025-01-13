@@ -9,56 +9,109 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.ImageView?>
 
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.MainViewListController"
+    style="-fx-background-color: linear-gradient(to bottom right, #0F2027, #203A43, #2C5364);
+           -fx-padding: 15;">
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.MainViewListController">
     <top>
-        <VBox spacing="5">
+        <!-- Stats Section -->
+        <VBox spacing="5" 
+              style="-fx-background-color: rgba(0, 255, 255, 0.2);
+                     -fx-border-color: #1FC8DB;
+                     -fx-border-width: 0 0 2 0;
+                     -fx-padding: 10;">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <Label fx:id="lblTotalTasks" text="Total Tasks: 0"/>
-            <Label fx:id="lblCompleted" text="Completed: 0"/>
-            <Label fx:id="lblDelayed" text="Delayed: 0"/>
-            <Label fx:id="lblUpcoming" text="Due within 7 days: 0"/>
+            <Label fx:id="lblTotalTasks" text="Total Tasks: 0" 
+                   style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+            <Label fx:id="lblCompleted" text="Completed: 0" 
+                   style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+            <Label fx:id="lblDelayed" text="Delayed: 0" 
+                   style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+            <Label fx:id="lblUpcoming" text="Due within 7 days: 0" 
+                   style="-fx-text-fill: white; -fx-font-size: 14px;"/>
         </VBox>
     </top>
+
     <center>
-        <ListView fx:id="taskListView"/>
+        <ListView fx:id="taskListView" 
+                  style="-fx-background-color: #232323; 
+                         -fx-border-color: #1FC8DB;
+                         -fx-border-radius: 6; 
+                         -fx-text-fill: white;
+                         -fx-cell-size: 40px; 
+                         -fx-padding: 10;" />
     </center>
+
     <bottom>
-    
-    <HBox spacing="15">
+        <!-- Action Buttons -->
+        <HBox spacing="15" 
+              style="-fx-padding: 15; 
+                     -fx-background-color: rgba(0, 255, 255, 0.1);
+                     -fx-border-color: #1FC8DB;
+                     -fx-border-width: 2 0 0 0;
+                     -fx-alignment: CENTER_LEFT;">
+            
+            <Button text="Add Task" onAction="#handleAddTask"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB;
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;">
+                <graphic>
+                    <ImageView fx:id="addIcon" fitWidth="16" fitHeight="16" />
+                </graphic>
+            </Button>
 
-    <padding>
-        <Insets bottom="15" top="15" left="15" right="0" />
-    </padding>
-    <Button text="Add Task" onAction="#handleAddTask">
-    
-    <graphic>
-        <ImageView fx:id="addIcon" fitWidth="16" fitHeight="16" />
-    </graphic>
-</Button>
-<Button text="Edit Task" onAction="#handleEditTask">
-    <graphic>
-        <ImageView fx:id="editIcon" fitWidth="16" fitHeight="16" />
-    </graphic>
-</Button>
-<Button text="Delete Task" onAction="#handleDeleteTask">
-    <graphic>
-        <ImageView fx:id="deleteIcon" fitWidth="16" fitHeight="16" />
-    </graphic>
-</Button>
-<Button text="Refresh" onAction="#handleRefresh">
-    <graphic>
-        <ImageView fx:id="refreshIcon" fitWidth="16" fitHeight="16" />
-    </graphic>
-</Button>
-<Button text="Settings" onAction="#handleSettings">
-    <graphic>
-        <ImageView fx:id="settingsIcon" fitWidth="16" fitHeight="16" />
-    </graphic>
-</Button>
-</HBox>
+            <Button text="Edit Task" onAction="#handleEditTask"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB;
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;">
+                <graphic>
+                    <ImageView fx:id="editIcon" fitWidth="16" fitHeight="16" />
+                </graphic>
+            </Button>
 
+            <Button text="Delete Task" onAction="#handleDeleteTask"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB;
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;">
+                <graphic>
+                    <ImageView fx:id="deleteIcon" fitWidth="16" fitHeight="16" />
+                </graphic>
+            </Button>
+
+            <Button text="Refresh" onAction="#handleRefresh"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB;
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;">
+                <graphic>
+                    <ImageView fx:id="refreshIcon" fitWidth="16" fitHeight="16" />
+                </graphic>
+            </Button>
+
+            <Button text="Settings" onAction="#handleSettings"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB;
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;">
+                <graphic>
+                    <ImageView fx:id="settingsIcon" fitWidth="16" fitHeight="16" />
+                </graphic>
+            </Button>
+        </HBox>
     </bottom>
 </BorderPane>
