@@ -34,7 +34,7 @@ public class AuthController {
 
             // Create new user with default categories and priorities
             User newUser = new User(username, hashedPassword);
-            newUser.setCategories(new ArrayList<>(Arrays.asList("Default Category")));
+            newUser.setCategories(new ArrayList<>());
             newUser.setPriorities(new ArrayList<>(Arrays.asList("Default")));
 
             // Add user to JSON
