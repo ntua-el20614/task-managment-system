@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="rootPane" fx:controller="Controllers.MainControllerWrapper"
+    style="-fx-background-color: linear-gradient(to bottom right, #0F2027, #203A43, #2C5364);
+           -fx-padding: 20;">
+
+    <top>
+        <!-- Top Section -->
+        <StackPane style="-fx-background-color: rgba(255, 255, 255, 0.10);
+                          -fx-border-color: #BBBBBB;
+                          -fx-border-width: 0 0 2 0;
+                          -fx-padding: 10;">
+            <!-- Futuristic welcome text -->
+            <Text fx:id="welcomeText" text="Welcome To TaskFlow!" 
+                  style="-fx-font-size: 32px;
+                         -fx-font-weight: bold;
+                         -fx-fill: #FFFFFF;
+                         -fx-stroke: cyan;
+                         -fx-stroke-width: 1;
+                         -fx-effect: dropshadow(gaussian, cyan, 5, 0.3, 0, 0);
+                         -fx-letter-spacing: 3px;
+                         -fx-text-alignment: center;" />
+
+            <!-- Right-aligned buttons in an HBox -->
+            <HBox alignment="CENTER_RIGHT" spacing="5" 
+                  style="-fx-padding: 5; 
+                         -fx-border-color: transparent; 
+                         -fx-background-color: transparent;
+                         -fx-position: absolute; 
+                         -fx-pref-width: 100%;">
+                
+                <!-- Eye button -->
+                <StackPane fx:id="eyeContainer" 
+                           style="-fx-border-color: #1FC8DB; 
+                                  -fx-border-width: 2; 
+                                  -fx-background-color: #0A0A0A; 
+                                  -fx-background-radius: 8; 
+                                  -fx-border-radius: 8; 
+                                  -fx-pref-width: 50; 
+                                  -fx-pref-height: 50;
+                                  -fx-cursor: hand;" 
+                           alignment="CENTER" 
+                           onMouseClicked="#handleToggleView">
+                    <ImageView fx:id="eyeToggle" fitWidth="30" fitHeight="30" />
+                </StackPane>
+
+                <!-- Lock button -->
+                <StackPane fx:id="lockContainer" 
+                           style="-fx-border-color: #1FC8DB; 
+                                  -fx-border-width: 2; 
+                                  -fx-background-color: #0A0A0A; 
+                                  -fx-background-radius: 8; 
+                                  -fx-border-radius: 8; 
+                                  -fx-pref-width: 50; 
+                                  -fx-pref-height: 50;
+                                  -fx-cursor: hand;" 
+                           alignment="CENTER" 
+                           onMouseClicked="#handleLogout">
+                    <ImageView fx:id="lockToggle" fitWidth="30" fitHeight="30" />
+                </StackPane>
+            </HBox>
+        </StackPane>
+    </top>
+
+    <center>
+        <!-- The dynamic content (Detailed or List View) will load here -->
+    </center>
+</BorderPane>

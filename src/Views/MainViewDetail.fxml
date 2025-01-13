@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.MainViewControllerDetailed"
+    style="-fx-background-color: linear-gradient(to bottom right, #1B2735, #090A0F);
+           -fx-padding: 15;">
+
+    <top>
+        <!-- Stats Section -->
+        <VBox spacing="5" 
+              style="-fx-background-color: rgba(0, 255, 255, 0.1);
+                     -fx-border-color: #1FC8DB;
+                     -fx-border-width: 0 0 2 0;
+                     -fx-padding: 10;">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Label fx:id="lblTotalTasks" text="Total Tasks: 0" 
+                   style="-fx-text-fill: #FFFFFF; -fx-font-size: 14px;"/>
+            <Label fx:id="lblCompleted" text="Completed: 0" 
+                   style="-fx-text-fill: #FFFFFF; -fx-font-size: 14px;"/>
+            <Label fx:id="lblDelayed" text="Delayed: 0" 
+                   style="-fx-text-fill: #FFFFFF; -fx-font-size: 14px;"/>
+            <Label fx:id="lblUpcoming" text="Due within 7 days: 0" 
+                   style="-fx-text-fill: #FFFFFF; -fx-font-size: 14px;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <!-- Columns for different statuses -->
+        <HBox spacing="10" 
+              style="-fx-padding: 10;
+                     -fx-background-color: rgba(255, 255, 255, 0.1);
+                     -fx-background-radius: 8;">
+            
+            <VBox fx:id="openColumn" spacing="5" styleClass="status-column"
+                  style="-fx-background-color: rgba(255,255,255,0.02);
+                         -fx-border-color: #1FC8DB;
+                         -fx-border-radius: 6;
+                         -fx-border-width: 0 1 1 0;
+                         -fx-padding: 8;">
+                <Label text="Open" 
+                       style="-fx-text-fill: #1FC8DB; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                <ListView fx:id="openList" 
+                          style="-fx-background-color: #232323; 
+                                 -fx-border-radius: 4; 
+                                 -fx-text-fill: white;"/>
+            </VBox>
+
+            <VBox fx:id="inProgressColumn" spacing="5" styleClass="status-column"
+                  style="-fx-background-color: rgba(255,255,255,0.02);
+                         -fx-border-color: #1FC8DB;
+                         -fx-border-radius: 6;
+                         -fx-border-width: 0 1 1 0;
+                         -fx-padding: 8;">
+                <Label text="In Progress" 
+                       style="-fx-text-fill: #1FC8DB; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                <ListView fx:id="inProgressList" 
+                          style="-fx-background-color: #232323; 
+                                 -fx-border-radius: 4; 
+                                 -fx-text-fill: white;"/>
+            </VBox>
+
+            <VBox fx:id="postponedColumn" spacing="5" styleClass="status-column"
+                  style="-fx-background-color: rgba(255,255,255,0.02);
+                         -fx-border-color: #1FC8DB;
+                         -fx-border-radius: 6;
+                         -fx-border-width: 0 1 1 0;
+                         -fx-padding: 8;">
+                <Label text="Postponed" 
+                       style="-fx-text-fill: #1FC8DB; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                <ListView fx:id="postponedList" 
+                          style="-fx-background-color: #232323; 
+                                 -fx-border-radius: 4; 
+                                 -fx-text-fill: white;"/>
+            </VBox>
+
+            <VBox fx:id="delayedColumn" spacing="5" styleClass="status-column"
+                  style="-fx-background-color: rgba(255,255,255,0.02);
+                         -fx-border-color: #1FC8DB;
+                         -fx-border-radius: 6;
+                         -fx-border-width: 0 1 1 0;
+                         -fx-padding: 8;">
+                <Label text="Delayed" 
+                       style="-fx-text-fill: #1FC8DB; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                <ListView fx:id="delayedList" 
+                          style="-fx-background-color: #232323; 
+                                 -fx-border-radius: 4; 
+                                 -fx-text-fill: white;"/>
+            </VBox>
+
+            <VBox fx:id="completedColumn" spacing="5" styleClass="status-column"
+                  style="-fx-background-color: rgba(255,255,255,0.02);
+                         -fx-border-color: #1FC8DB;
+                         -fx-border-radius: 6;
+                         -fx-border-width: 0 1 1 0;
+                         -fx-padding: 8;">
+                <Label text="Completed" 
+                       style="-fx-text-fill: #1FC8DB; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                <ListView fx:id="completedList" 
+                          style="-fx-background-color: #232323; 
+                                 -fx-border-radius: 4; 
+                                 -fx-text-fill: white;"/>
+            </VBox>
+        </HBox>
+    </center>
+
+    <bottom>
+        <!-- Action Buttons -->
+        <HBox spacing="15" 
+              style="-fx-padding: 15; 
+                     -fx-background-color: rgba(0, 255, 255, 0.1);
+                     -fx-border-color: #1FC8DB;
+                     -fx-border-width: 2 0 0 0;
+                     -fx-alignment: CENTER_LEFT;">
+            
+            <Button text="Add Task" onAction="#handleAddTask"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB;
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;">
+                <graphic>
+                    <ImageView fx:id="addIcon" fitWidth="16" fitHeight="16" />
+                </graphic>
+            </Button>
+
+            <Button text="Edit Task" onAction="#handleEditTask"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB;
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;">
+                <graphic>
+                    <ImageView fx:id="editIcon" fitWidth="16" fitHeight="16" />
+                </graphic>
+            </Button>
+
+            <Button text="Delete Task" onAction="#handleDeleteTask"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB;
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;">
+                <graphic>
+                    <ImageView fx:id="deleteIcon" fitWidth="16" fitHeight="16" />
+                </graphic>
+            </Button>
+
+            <Button text="Refresh" onAction="#handleRefresh"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB;
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;">
+                <graphic>
+                    <ImageView fx:id="refreshIcon" fitWidth="16" fitHeight="16" />
+                </graphic>
+            </Button>
+
+            <Button text="Settings" onAction="#handleSettings"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB;
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;">
+                <graphic>
+                    <ImageView fx:id="settingsIcon" fitWidth="16" fitHeight="16" />
+                </graphic>
+            </Button>
+        </HBox>
+    </bottom>
+</BorderPane>

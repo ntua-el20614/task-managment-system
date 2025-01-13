@@ -47,7 +47,7 @@ public class App extends Application {
      */
     public static void showMainView() {
         try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("/Views/MainView.fxml"));
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("/Views/MainWrapper.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root, 800, 600); // Adjust dimensions as needed
             primaryStage.setTitle("MediaLab Assistant");
@@ -76,6 +76,12 @@ public class App extends Application {
         return currentUser;
     }
 
+    /**
+     * get the current user's username
+     */
+    public static String getCurrentUsername() {
+        return currentUser != null ? currentUser.getUsername() : null;
+    }
     /**
      * Refreshes the current user data.
      */
