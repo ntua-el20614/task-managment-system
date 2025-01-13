@@ -30,9 +30,6 @@
         <Label text="Deadline:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
         <DatePicker fx:id="dpDeadline" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-        <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-        <ComboBox fx:id="cmbStatus" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-
         <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="6" alignment="CENTER_RIGHT">
             <children>
                 <Button text="Cancel" onAction="#handleCancel"/>

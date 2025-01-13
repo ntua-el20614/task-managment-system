@@ -37,7 +37,7 @@ public class AddTaskDialogController {
     private DatePicker dpDeadline;
 
     @FXML
-    private ComboBox<String> cmbStatus;
+    private TextField cmbStatus;
 
     @FXML
     private Button btnAdd;
@@ -52,18 +52,7 @@ public class AddTaskDialogController {
      */
     @FXML
     private void initialize() {
-        // Populate the Status ComboBox
-        cmbStatus.setItems(FXCollections.observableArrayList(
-            "Open", 
-            "In Progress", 
-            "Postponed", 
-            "Delayed", 
-            "Completed"
-        ));
-    
-        // Select the default value for the Status ComboBox
-        cmbStatus.getSelectionModel().selectFirst();
-    
+
         // Disable the Add button initially
         btnAdd.setDisable(true);
     
@@ -131,7 +120,7 @@ public class AddTaskDialogController {
         String description = txtDescription.getText().trim();
         String category = cmbCategory.getValue();
         String priority = cmbPriority.getValue();
-        String status = Optional.ofNullable(cmbStatus.getValue()).orElse("Open");
+        String status = "Open";
         LocalDate deadline = dpDeadline.getValue();
 
         if (title.isEmpty() || deadline == null) {
