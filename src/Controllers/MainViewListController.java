@@ -22,6 +22,8 @@ import java.util.Optional;
 import java.net.URL;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class MainViewListController implements Initializable {
 
@@ -100,6 +102,9 @@ if (empty || task == null) {
             }
         });
 
+        // load the buttons
+        initializeButtonIcons();
+
         // Load tasks for the current user
         reloadTasks();
     }
@@ -135,6 +140,18 @@ if (empty || task == null) {
                 .filter(task -> task.isDueWithinDays(7))
                 .count();
     }
+
+    @FXML
+    private ImageView addIcon, editIcon, deleteIcon, refreshIcon, settingsIcon;
+
+    private void initializeButtonIcons() {
+        addIcon.setImage(new Image(App.class.getResource("/Media/add.png").toExternalForm()));
+        editIcon.setImage(new Image(App.class.getResource("/Media/edit.png").toExternalForm()));
+        deleteIcon.setImage(new Image(App.class.getResource("/Media/delete.png").toExternalForm()));
+        refreshIcon.setImage(new Image(App.class.getResource("/Media/refresh.png").toExternalForm()));
+        settingsIcon.setImage(new Image(App.class.getResource("/Media/settings.png").toExternalForm()));
+    }
+
 
     @FXML
     private void handleAddTask() {

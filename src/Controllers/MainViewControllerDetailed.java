@@ -22,7 +22,10 @@ import javafx.stage.Modality;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
+import javafx.scene.control.Alert;
+// import images
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 public class MainViewControllerDetailed implements Initializable {
 
     @FXML
@@ -85,6 +88,7 @@ public class MainViewControllerDetailed implements Initializable {
         initializeColumn(postponedList, "Postponed");
         initializeColumn(completedList, "Completed");
         initializeColumn(delayedList, "Delayed");
+        initializeButtonIcons();
 
         reloadTasks();
     }
@@ -327,6 +331,22 @@ private void initializeColumn(ListView<Task> column, String status) {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private ImageView addIcon, editIcon, deleteIcon, refreshIcon, settingsIcon;
+
+    private void initializeButtonIcons() {
+        try {
+            addIcon.setImage(new Image(App.class.getResource("/Media/add.png").toExternalForm()));
+            editIcon.setImage(new Image(App.class.getResource("/Media/edit.png").toExternalForm()));
+            deleteIcon.setImage(new Image(App.class.getResource("/Media/delete.png").toExternalForm()));
+            refreshIcon.setImage(new Image(App.class.getResource("/Media/refresh.png").toExternalForm()));
+            settingsIcon.setImage(new Image(App.class.getResource("/Media/settings.png").toExternalForm()));
+        } catch (NullPointerException e) {
+            System.err.println("Error loading button icons: " + e.getMessage());
+        }
+    }
+
 
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
