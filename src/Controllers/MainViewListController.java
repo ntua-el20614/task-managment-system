@@ -117,6 +117,16 @@ public class MainViewListController implements Initializable {
             }
         });
 
+        // Add double-click event listener to open Edit Task view
+        taskListView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // Double-click detected
+                Task selectedTask = taskListView.getSelectionModel().getSelectedItem();
+                if (selectedTask != null) {
+                    handleEditTask();
+                }
+            }
+        });
+
         // Initialize icons
         initializeButtonIcons();
 
