@@ -13,11 +13,14 @@ import javafx.scene.control.*;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.Node;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
+import javafx.collections.ListChangeListener;
 
 import java.net.URL;
 import java.util.Optional;
@@ -26,6 +29,7 @@ import javafx.scene.control.Alert;
 // import images
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 public class MainViewControllerDetailed implements Initializable {
 
     @FXML
@@ -70,91 +74,260 @@ public class MainViewControllerDetailed implements Initializable {
     @FXML
     private Button btnSettings;
 
+    @FXML
+    private TextField txtSearch;
+
+    @FXML
+    private ComboBox<String> cmbCategory;
+
+    @FXML
+    private ComboBox<String> cmbPriority;
+
+
+    @FXML
+    private Button btnClearFilters;
+
     private User currentUser;
     private ObservableList<Task> taskList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         currentUser = App.getCurrentUser();
-        if (currentUser == null) {
-            App.showLoginView();
-            return;
-        }
+    if (currentUser == null) {
+        App.showLoginView();
+        return;
+    }
 
-        taskList = FXCollections.observableArrayList(currentUser.getTasks());
+    taskList = FXCollections.observableArrayList(currentUser.getTasks());
 
-        initializeColumn(openList, "Open");
-        initializeColumn(inProgressList, "In Progress");
-        initializeColumn(postponedList, "Postponed");
-        initializeColumn(completedList, "Completed");
+    // Ensure ObservableList
+    ObservableList<String> categories = FXCollections.observableArrayList(currentUser.getCategories());
+    ObservableList<String> priorities = FXCollections.observableArrayList(currentUser.getPriorities());
+
+    // Initialize multi-select dropdowns
+    initializeMultiSelectDropdown(cmbCategory, categories);
+    initializeMultiSelectDropdown(cmbPriority, priorities);
+
+    txtSearch.textProperty().addListener((observable, oldValue, newValue) -> filterTasks());
+
+    btnClearFilters.setOnAction(event -> clearFilters());
+
+    initializeColumn(openList, "Open");
+    initializeColumn(inProgressList, "In Progress");
+    initializeColumn(postponedList, "Postponed");
+    initializeColumn(completedList, "Completed");
         initializeColumn(delayedList, "Delayed");
         initializeButtonIcons();
 
         reloadTasks();
     }
 
-private void initializeColumn(ListView<Task> column, String status) {
-    column.setItems(FXCollections.observableArrayList());
-    column.setCellFactory(param -> new ListCell<Task>() {
-        @Override
-        protected void updateItem(Task task, boolean empty) {
-            super.updateItem(task, empty);
-            if (empty || task == null) {
-                setText(null);
+
+
+    private void initializeMultiSelectDropdown(ComboBox<String> comboBox, ObservableList<String> items) {
+        // Create an ObservableList to track selected items
+        ObservableList<String> selectedItems = FXCollections.observableArrayList();
+        comboBox.getProperties().put("selectedItems", selectedItems); // Store selected items in ComboBox properties
+
+        // Set ComboBox items
+        comboBox.setItems(items);
+
+        // Override default dropdown behavior
+    comboBox.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
+        // If the user clicks on the arrow button (the ComboBox field),
+    // then toggle the open/close state.  
+    // If the user clicks inside the list cells, keep it open.
+
+    // Check if the click is on the list cell area or the arrow area:
+        Node node = event.getPickResult().getIntersectedNode();
+        if (node instanceof Labeled || node instanceof ListCell) {
+            // The user clicked on a list item; keep it open
+            event.consume();
+        } else {
+            // The user clicked on the arrow or "button" area; toggle open/close
+            if (comboBox.isShowing()) {
+                comboBox.hide();
             } else {
-                setText(task.getTitle());
+                comboBox.show();
             }
-        }
-    });
-
-    column.setOnMouseClicked(event -> {
-        if (event.getClickCount() == 2) { // Double-click detected
-            Task selectedTask = column.getSelectionModel().getSelectedItem();
-            if (selectedTask != null) {
-                openEditTaskView(selectedTask);
-            }
-        }
-    });
-
-    column.setOnDragDetected(event -> {
-        Task selectedTask = column.getSelectionModel().getSelectedItem();
-        if (selectedTask != null) {
-            Dragboard db = column.startDragAndDrop(TransferMode.MOVE);
-            ClipboardContent content = new ClipboardContent();
-            content.putString(selectedTask.getId());
-            db.setContent(content);
             event.consume();
         }
     });
 
-    column.setOnDragOver(event -> {
-        if (event.getGestureSource() != column && event.getDragboard().hasString()) {
-            event.acceptTransferModes(TransferMode.MOVE);
-        }
-        event.consume();
-    });
 
-    column.setOnDragDropped(event -> {
-        Dragboard db = event.getDragboard();
-        if (db.hasString()) {
-            String taskId = db.getString();
-            Task draggedTask = taskList.stream()
-                    .filter(task -> task.getId().equals(taskId))
-                    .findFirst()
-                    .orElse(null);
+        // Use a custom cell factory for rendering checkboxes
+        comboBox.setCellFactory(param -> new ListCell<>() {
+            private final CheckBox checkBox = new CheckBox();
 
-            if (draggedTask != null) {
-                draggedTask.setStatus(status);
-                JsonUtils.updateUser(currentUser);
-                reloadTasks();
+            {
+                checkBox.setOnAction(event -> {
+                    String item = getItem();
+                    if (checkBox.isSelected()) {
+                        selectedItems.add(item); // Add to selected items
+                    } else {
+                        selectedItems.remove(item); // Remove from selected items
+                    }
+                    filterTasks(); // Trigger filtering
+                });
             }
-            event.setDropCompleted(true);
-        } else {
-            event.setDropCompleted(false);
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    checkBox.setText(item);
+                    checkBox.setSelected(selectedItems.contains(item));
+                    setGraphic(checkBox);
+                }
+            }
+        });
+
+        // Update the ComboBox button cell to display selected items
+        comboBox.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || selectedItems.isEmpty()) {
+                    setText(comboBox.getPromptText());
+                } else {
+                    setText(getEllipsizedText(String.join(", ", selectedItems), 20)); // Limit length
+                }
+            }
+        });
+    }
+
+    private String getEllipsizedText(String text, int maxLength) {
+        if (text.length() <= maxLength) {
+            return text; // No need to truncate
         }
-        event.consume();
-    });
-}
+        return text.substring(0, maxLength - 3) + "..."; // Add ellipsis
+    }
+
+
+    private void filterTasks() {
+        String searchText = txtSearch.getText().toLowerCase();
+
+        // Retrieve selected items from ComboBoxes
+        @SuppressWarnings("unchecked")
+        ObservableList<String> selectedCategories = (ObservableList<String>) cmbCategory.getProperties().get("selectedItems");
+        @SuppressWarnings("unchecked")
+        ObservableList<String> selectedPriorities = (ObservableList<String>) cmbPriority.getProperties().get("selectedItems");
+
+        ObservableList<Task> filteredTasks = FXCollections.observableArrayList(
+                taskList.stream()
+                        .filter(task -> 
+                            (searchText.isEmpty() || task.getTitle().toLowerCase().contains(searchText)) &&
+                            (selectedCategories.isEmpty() || selectedCategories.contains(task.getCategory())) &&
+                            (selectedPriorities.isEmpty() || selectedPriorities.contains(task.getPriority()))
+                        )
+                        .toList()
+        );
+
+        updateListView(filteredTasks);
+    }
+
+
+    private String getSelectedItemsAsString(ComboBox<String> comboBox) {
+        @SuppressWarnings("unchecked")
+        ObservableList<String> selectedItems = (ObservableList<String>) comboBox.getProperties().get("selectedItems");
+        return String.join(", ", selectedItems);
+    }
+
+
+
+    private void updateListView(ObservableList<Task> filteredTasks) {
+        openList.getItems().setAll(filteredTasks.stream().filter(task -> task.getStatus().equalsIgnoreCase("Open")).toList());
+        inProgressList.getItems().setAll(filteredTasks.stream().filter(task -> task.getStatus().equalsIgnoreCase("In Progress")).toList());
+        postponedList.getItems().setAll(filteredTasks.stream().filter(task -> task.getStatus().equalsIgnoreCase("Postponed")).toList());
+        completedList.getItems().setAll(filteredTasks.stream().filter(task -> task.getStatus().equalsIgnoreCase("Completed")).toList());
+        delayedList.getItems().setAll(filteredTasks.stream().filter(task -> task.getStatus().equalsIgnoreCase("Delayed")).toList());
+    }
+
+    private void clearFilters() {
+        txtSearch.clear();
+
+        // Clear both the selection model and the 'selectedItems' list for categories
+        cmbCategory.getSelectionModel().clearSelection();
+        @SuppressWarnings("unchecked")
+        ObservableList<String> selectedCategories = (ObservableList<String>) cmbCategory.getProperties().get("selectedItems");
+        selectedCategories.clear();
+
+        // Clear both the selection model and the 'selectedItems' list for priorities
+        cmbPriority.getSelectionModel().clearSelection();
+        @SuppressWarnings("unchecked")
+        ObservableList<String> selectedPriorities = (ObservableList<String>) cmbPriority.getProperties().get("selectedItems");
+        selectedPriorities.clear();
+
+        reloadTasks();
+    }
+
+
+
+    private void initializeColumn(ListView<Task> column, String status) {
+        column.setItems(FXCollections.observableArrayList());
+        column.setCellFactory(param -> new ListCell<Task>() {
+            @Override
+            protected void updateItem(Task task, boolean empty) {
+                super.updateItem(task, empty);
+                if (empty || task == null) {
+                    setText(null);
+                } else {
+                    setText(task.getTitle());
+                }
+            }
+        });
+
+        column.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // Double-click detected
+                Task selectedTask = column.getSelectionModel().getSelectedItem();
+                if (selectedTask != null) {
+                    openEditTaskView(selectedTask);
+                }
+            }
+        });
+
+        column.setOnDragDetected(event -> {
+            Task selectedTask = column.getSelectionModel().getSelectedItem();
+            if (selectedTask != null) {
+                Dragboard db = column.startDragAndDrop(TransferMode.MOVE);
+                ClipboardContent content = new ClipboardContent();
+                content.putString(selectedTask.getId());
+                db.setContent(content);
+                event.consume();
+            }
+        });
+
+        column.setOnDragOver(event -> {
+            if (event.getGestureSource() != column && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+
+        column.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasString()) {
+                String taskId = db.getString();
+                Task draggedTask = taskList.stream()
+                        .filter(task -> task.getId().equals(taskId))
+                        .findFirst()
+                        .orElse(null);
+
+                if (draggedTask != null) {
+                    draggedTask.setStatus(status);
+                    JsonUtils.updateUser(currentUser);
+                    reloadTasks();
+                }
+                event.setDropCompleted(true);
+            } else {
+                event.setDropCompleted(false);
+            }
+            event.consume();
+        });
+    }
 
     private void openEditTaskView(Task selectedTask) {
         EditTaskDialog editTaskDialog = new EditTaskDialog(currentUser, selectedTask);
