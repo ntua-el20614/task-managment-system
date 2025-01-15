@@ -21,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.collections.ListChangeListener;
+import java.time.LocalDate;
 
 import java.net.URL;
 import java.util.Optional;
@@ -28,8 +29,12 @@ import java.util.ResourceBundle;
 import javafx.scene.control.Alert;
 // import images
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.image.ImageView;
+
 public class MainViewControllerDetailed implements Initializable {
 
     @FXML
@@ -149,6 +154,7 @@ public class MainViewControllerDetailed implements Initializable {
                 }
             }
         });
+        showReminders();
     }
 
 
@@ -569,6 +575,43 @@ public class MainViewControllerDetailed implements Initializable {
             System.err.println("Error loading button icons: " + e.getMessage());
         }
     }
+
+    private void showReminders() {
+        LocalDate today = LocalDate.now();
+
+        currentUser.getTasks().stream()
+            .filter(task -> task.getReminders() != null)
+            .forEach(task -> {
+                task.getReminders().forEach(reminder -> {
+                    LocalDate reminderDate = LocalDate.parse(reminder);
+                    if (reminderDate.isEqual(today)) {
+                        openReminderWindow(task.getTitle(), task.getDescription(), task.getDeadline(), reminder);
+                    }
+                });
+            });
+    }
+
+    private void openReminderWindow(String title, String description, String deadline, String reminderDate) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/ReminderAlertView.fxml"));
+            Parent root = loader.load();
+
+            ReminderAlertController controller = loader.getController();
+            controller.setReminderDetails(title, description, deadline, reminderDate);
+
+            Stage stage = new Stage();
+            stage.setTitle("Reminder");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace(); // Log the exception stack trace
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load Reminder window. " + e.getMessage());
+        }
+    }
+
+
+
 
 
     private void showAlert(Alert.AlertType type, String title, String message) {
