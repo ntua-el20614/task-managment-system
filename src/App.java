@@ -86,13 +86,14 @@ public class App extends Application {
             }
         }
     }
-
+    /*
     @Override
     public void stop() {
         if (currentUser != null) {
             JsonUtils.updateUser(currentUser);
         }
     }
+    */
 
     public static void main(String[] args) {
         launch(args);
