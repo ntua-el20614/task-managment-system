@@ -320,6 +320,7 @@ public class MainViewControllerDetailed implements Initializable {
                     draggedTask.setStatus(status);
                     JsonUtils.updateUser(currentUser);
                     reloadTasks();
+                    filterTasks();
                 }
                 event.setDropCompleted(true);
             } else {
@@ -335,6 +336,7 @@ public class MainViewControllerDetailed implements Initializable {
         Optional<Task> result = editTaskDialog.getUpdatedTask(); // Retrieve the updated task after the dialog closes
         if (result.isPresent()) {
             reloadTasks(); // Refresh the task lists
+            filterTasks(); // Reapply filters
         }
     }
 
@@ -435,6 +437,7 @@ public class MainViewControllerDetailed implements Initializable {
                 currentUser.getTasks().add(newTask.get()); // Add the new task to the current user's tasks
                 JsonUtils.updateUser(currentUser); // Persist the changes to the JSON file
                 reloadTasks(); // Refresh the task list to show the new task
+                filterTasks(); // Reapply filters
             }
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to open Add Task dialog.");
@@ -473,6 +476,7 @@ public class MainViewControllerDetailed implements Initializable {
     
                 // Reload the lists to reflect the changes
                 reloadTasks();
+                filterTasks();
             }
         } else {
             showAlert(Alert.AlertType.WARNING, "No Task Selected", "Please select a task to delete.");
@@ -484,6 +488,7 @@ public class MainViewControllerDetailed implements Initializable {
     private void handleRefresh() {
         // System.out.println("Refreshing");
         reloadTasks();
+        filterTasks();
     }
 
     @FXML
@@ -497,7 +502,10 @@ public class MainViewControllerDetailed implements Initializable {
         SettingsViewController controller = loader.getController();
 
         // Set the callback to reload tasks when settings change
-        controller.setOnSettingsChangedCallback(ignored -> reloadTasks());
+        controller.setOnSettingsChangedCallback(ignored -> {
+            reloadTasks();
+            filterTasks();
+        });
 
         // Configure the settings modal
         Stage settingsStage = new Stage();
@@ -510,6 +518,7 @@ public class MainViewControllerDetailed implements Initializable {
 
         // Explicitly reload tasks after the settings modal is closed
         reloadTasks();
+        filterTasks();
     } catch (Exception e) {
         showAlert(Alert.AlertType.ERROR, "Error", "Failed to open the Settings dialog.");
         e.printStackTrace();

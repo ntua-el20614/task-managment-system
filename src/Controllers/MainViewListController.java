@@ -365,6 +365,7 @@ public class MainViewListController implements Initializable {
 
             // Reload tasks after adding a new task
             reloadTasks();
+            filterTasks();
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to open Add Task dialog.");
             e.printStackTrace();
@@ -394,6 +395,7 @@ public class MainViewListController implements Initializable {
                 Optional<Task> updatedTask = controller.getUpdatedTask();
                 if (updatedTask.isPresent()) {
                     reloadTasks(); // Refresh tasks to reflect changes
+                    filterTasks();
                 }
             } catch (Exception e) {
                 showAlert(Alert.AlertType.ERROR, "Error", "Failed to open Edit Task dialog.");
@@ -421,6 +423,7 @@ public class MainViewListController implements Initializable {
 
                 // Refresh the ObservableList
                 reloadTasks(); // Reload tasks to ensure consistency
+                filterTasks();
             }
         } else {
             showAlert(Alert.AlertType.WARNING, "No Task Selected", "Please select a task to delete.");
@@ -430,6 +433,7 @@ public class MainViewListController implements Initializable {
     @FXML
     private void handleRefresh() {
         reloadTasks(); // Refresh the task list
+        filterTasks();
     }
 
     @FXML
@@ -443,7 +447,10 @@ public class MainViewListController implements Initializable {
             SettingsViewController controller = loader.getController();
 
             // Set the callback to reload tasks when settings change
-            controller.setOnSettingsChangedCallback(ignored -> reloadTasks());
+            controller.setOnSettingsChangedCallback(ignored -> {
+                reloadTasks();
+                filterTasks();
+                });
 
             // Configure the settings modal
             Stage settingsStage = new Stage();
@@ -456,6 +463,7 @@ public class MainViewListController implements Initializable {
 
             // Explicitly reload tasks after the settings modal is closed
             reloadTasks();
+            filterTasks();
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to open the Settings dialog.");
             e.printStackTrace();
