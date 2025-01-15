@@ -135,6 +135,36 @@ public class MainViewListController implements Initializable {
 
         // Load tasks for the current user
         reloadTasks();
+
+        cmbCategory.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    // Display prompt text when there's no selection
+                    setText(cmbCategory.getPromptText());
+                    setStyle("-fx-text-fill: white;");  // Set prompt text color to white
+                } else {
+                    setText(item);
+                    setStyle("");  // Reset style for non-prompt items or apply desired style
+                }
+            }
+        });
+
+        cmbPriority.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(cmbPriority.getPromptText());
+                    setStyle("-fx-text-fill: white;");
+                } else {
+                    setText(item);
+                    setStyle("");
+                }
+            }
+        });
+
     }
 
     /**
