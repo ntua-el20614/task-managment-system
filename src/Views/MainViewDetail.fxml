@@ -8,31 +8,69 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.Pane?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.MainViewControllerDetailed"
     style="-fx-background-color: linear-gradient(to bottom right, #1B2735, #090A0F);
            -fx-padding: 15;">
 
-    <top>
-        <!-- Stats Section -->
-        <VBox spacing="5" 
+       <top>
+       <HBox spacing="20" 
               style="-fx-background-color: rgba(0, 255, 255, 0.1);
                      -fx-border-color: #1FC8DB;
                      -fx-border-width: 0 0 2 0;
-                     -fx-padding: 10;">
-            <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
-            </padding>
-            <Label fx:id="lblTotalTasks" text="Total Tasks: 0" 
-                   style="-fx-text-fill: #FFFFFF; -fx-font-size: 14px;"/>
-            <Label fx:id="lblCompleted" text="Completed: 0" 
-                   style="-fx-text-fill: #FFFFFF; -fx-font-size: 14px;"/>
-            <Label fx:id="lblDelayed" text="Delayed: 0" 
-                   style="-fx-text-fill: #FFFFFF; -fx-font-size: 14px;"/>
-            <Label fx:id="lblUpcoming" text="Due within 7 days: 0" 
-                   style="-fx-text-fill: #FFFFFF; -fx-font-size: 14px;"/>
-        </VBox>
-    </top>
+                     -fx-padding: 10;"
+              alignment="CENTER_LEFT">
+              
+              <!-- Stats Section -->
+              <VBox spacing="5">
+              <Label fx:id="lblTotalTasks" text="Total Tasks: 0" 
+                     style="-fx-text-fill: #FFFFFF; -fx-font-size: 14px;"/>
+              <Label fx:id="lblCompleted" text="Completed: 0" 
+                     style="-fx-text-fill: #FFFFFF; -fx-font-size: 14px;"/>
+              <Label fx:id="lblDelayed" text="Delayed: 0" 
+                     style="-fx-text-fill: #FFFFFF; -fx-font-size: 14px;"/>
+              <Label fx:id="lblUpcoming" text="Due within 7 days: 0" 
+                     style="-fx-text-fill: #FFFFFF; -fx-font-size: 14px;"/>
+              </VBox>
+              
+ 
+    <!-- Spacer to push everything to the right -->
+    <Pane HBox.hgrow="ALWAYS" />
+
+    <!-- 2) Filters Section -->
+    <VBox spacing="5" alignment="TOP_RIGHT">
+        <HBox spacing="10">
+            <Label text="Search:" style="-fx-text-fill: #FFFFFF;"/>
+            <TextField fx:id="txtSearch" promptText="Search by name..."
+                       style="-fx-background-color: #232323; -fx-text-fill: #FFFFFF;"/>
+        </HBox>
+        <HBox spacing="10">
+            <Label text="Category:" style="-fx-text-fill: #FFFFFF;"/>
+            <ComboBox fx:id="cmbCategory" promptText="Select Categories"
+                      style="-fx-background-color: #232323; -fx-text-fill: white; -fx-font-size: 12px;"
+                      VBox.vgrow="NEVER"/>
+        </HBox>
+        <HBox spacing="10">
+            <Label text="Priority:" style="-fx-text-fill: #FFFFFF;"/>
+            <ComboBox fx:id="cmbPriority" promptText="Select Priorities"
+                      style="-fx-background-color: #232323; -fx-text-fill: white; -fx-font-size: 12px;"
+                      VBox.vgrow="NEVER"/>
+        </HBox>
+    </VBox>
+
+    <!-- 3) Clear Filters Button in Another Column -->
+    <VBox spacing="5" alignment="TOP_RIGHT">
+        <Button fx:id="btnClearFilters" text="Clear Filters"
+                style="-fx-background-color: #232323; -fx-text-fill: #1FC8DB;
+                       -fx-border-color: #1FC8DB; -fx-border-radius: 8;
+                       -fx-background-radius: 8;"/>
+    </VBox>
+</HBox>
+       </top>
+
 
     <center>
         <!-- Columns for different statuses -->
