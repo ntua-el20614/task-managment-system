@@ -1,41 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.geometry.Insets?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.SettingsViewController" spacing="10">
-    <padding>
-        <Insets top="10" right="10" bottom="10" left="10"/>
-    </padding>
-    <Label text="Categories"/>
-    <ListView fx:id="listViewCategories" prefHeight="150"/>
-    <HBox spacing="10">
-        <TextField fx:id="inputNewCategory" promptText="New Category"/>
-        <Button fx:id="btnAddCategory" text="Add" onAction="#handleAddCategory"/>
-    </HBox>
-    <HBox spacing="10">
-        <Button fx:id="btnRenameCategory" text="Rename" onAction="#handleRenameCategory"/>
-        <Button fx:id="btnDeleteCategory" text="Delete" onAction="#handleDeleteCategory"/>
-    </HBox>
+<HBox xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.SettingsViewController" spacing="20"
+      style="-fx-background-color: linear-gradient(to bottom right, #1B2735, #090A0F);
+             -fx-padding: 15;">
 
-    <Label text="Priorities"/>
-    <ListView fx:id="listViewPriorities" prefHeight="150"/>
-    <HBox spacing="10">
-        <TextField fx:id="inputNewPriority" promptText="New Priority"/>
-        <Button fx:id="btnAddPriority" text="Add" onAction="#handleAddPriority"/>
-    </HBox>
-    <HBox spacing="10">
-        <Button fx:id="btnRenamePriority" text="Rename" onAction="#handleRenamePriority"/>
-        <Button fx:id="btnDeletePriority" text="Delete" onAction="#handleDeletePriority"/>
-    </HBox>
+    <VBox spacing="20" 
+          style="-fx-background-color: rgba(255, 255, 255, 0.1);
+                 -fx-border-color: #1FC8DB;
+                 -fx-border-width: 2;
+                 -fx-border-radius: 8;
+                 -fx-padding: 15;">
 
-    <HBox spacing="10">
-        <Button fx:id="btnLogout" text="Logout" onAction="#handleLogout"/>
-        <Button fx:id="btnClose" text="Close" onAction="#handleClose"/>
-    </HBox>
-</VBox>
+        <Label text="Categories" 
+               style="-fx-text-fill: #1FC8DB; 
+                      -fx-font-size: 16px; 
+                      -fx-font-weight: bold;"/>
+        <ListView fx:id="listViewCategories" prefHeight="150" 
+                  style="-fx-background-color: #232323; 
+                         -fx-border-color: #1FC8DB; 
+                         -fx-border-radius: 4; 
+                         -fx-text-fill: white;"/>
+
+        <HBox spacing="10">
+            <TextField fx:id="inputNewCategory" promptText="New Category"
+                       style="-fx-background-color: #232323; 
+                              -fx-text-fill: #FFFFFF; 
+                              -fx-border-color: #1FC8DB; 
+                              -fx-border-radius: 4;"/>
+            <Button fx:id="btnAddCategory" text="Add" onAction="#handleAddCategory"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB; 
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;"/>
+        </HBox>
+
+        <HBox spacing="10">
+            <Button fx:id="btnRenameCategory" text="Rename" onAction="#handleRenameCategory"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB; 
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;"/>
+            <Button fx:id="btnDeleteCategory" text="Delete" onAction="#handleDeleteCategory"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB; 
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;"/>
+        </HBox>
+
+    </VBox>
+
+    <VBox spacing="20" 
+          style="-fx-background-color: rgba(255, 255, 255, 0.1);
+                 -fx-border-color: #1FC8DB;
+                 -fx-border-width: 2;
+                 -fx-border-radius: 8;
+                 -fx-padding: 15;">
+
+        <Label text="Priorities" 
+               style="-fx-text-fill: #1FC8DB; 
+                      -fx-font-size: 16px; 
+                      -fx-font-weight: bold;"/>
+        <ListView fx:id="listViewPriorities" prefHeight="150" 
+                  style="-fx-background-color: #232323; 
+                         -fx-border-color: #1FC8DB; 
+                         -fx-border-radius: 4; 
+                         -fx-text-fill: white;"/>
+
+        <HBox spacing="10">
+            <TextField fx:id="inputNewPriority" promptText="New Priority"
+                       style="-fx-background-color: #232323; 
+                              -fx-text-fill: #FFFFFF; 
+                              -fx-border-color: #1FC8DB; 
+                              -fx-border-radius: 4;"/>
+            <Button fx:id="btnAddPriority" text="Add" onAction="#handleAddPriority"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB; 
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;"/>
+        </HBox>
+
+        <HBox spacing="10">
+            <Button fx:id="btnRenamePriority" text="Rename" onAction="#handleRenamePriority"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB; 
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;"/>
+            <Button fx:id="btnDeletePriority" text="Delete" onAction="#handleDeletePriority"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB; 
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;"/>
+        </HBox>
+
+    </VBox>
+
+</HBox>
