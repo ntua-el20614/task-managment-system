@@ -195,7 +195,7 @@ public class AddTaskDialogController {
         }
 
         // Add the reminder to the list
-        reminderList.add(type + " (" + reminderDateStr + ")");
+        reminderList.add(reminderDateStr);
     }
 
 
