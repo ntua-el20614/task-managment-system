@@ -341,27 +341,41 @@ public class MainViewControllerDetailed implements Initializable {
             event.consume();
         });
 
-        column.setOnDragDropped(event -> {
-            Dragboard db = event.getDragboard();
-            if (db.hasString()) {
-                String taskId = db.getString();
-                Task draggedTask = taskList.stream()
-                        .filter(task -> task.getId().equals(taskId))
-                        .findFirst()
-                        .orElse(null);
+    column.setOnDragDropped(event -> {
+        Dragboard db = event.getDragboard();
+        if (db.hasString()) {
+            String taskId = db.getString();
+            Task draggedTask = taskList.stream()
+                    .filter(task -> task.getId().equals(taskId))
+                    .findFirst()
+                    .orElse(null);
 
-                if (draggedTask != null) {
-                    draggedTask.setStatus(status);
-                    JsonUtils.updateUser(currentUser);
-                    reloadTasks();
-                    filterTasks();
+            if (draggedTask != null) {
+                // Check if the status is "Completed"
+                if ("Completed".equals(status)) {
+                    // Clear all reminders for the task
+                    if (draggedTask.getReminders() != null) {
+                        draggedTask.getReminders().clear();
+                    }
                 }
-                event.setDropCompleted(true);
-            } else {
-                event.setDropCompleted(false);
+
+                // Update the task's status
+                draggedTask.setStatus(status);
+
+                // Persist the changes to the user data
+                JsonUtils.updateUser(currentUser);
+
+                // Reload and filter tasks
+                reloadTasks();
+                filterTasks();
             }
-            event.consume();
-        });
+            event.setDropCompleted(true);
+        } else {
+            event.setDropCompleted(false);
+        }
+        event.consume();
+    });
+
     }
 
     private void openEditTaskView(Task selectedTask) {

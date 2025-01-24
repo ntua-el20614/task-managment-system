@@ -67,7 +67,7 @@ public class EditTaskDialogController {
 
     @FXML
     private void initialize() {
-        // Disable the Save button initially until title is entered
+        // Disable the Save button initially until the title is entered
         btnSave.setDisable(true);
 
         txtTitle.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -91,10 +91,43 @@ public class EditTaskDialogController {
 
         // Bind Delete Reminder button disable property to ListView selection
         btnDeleteReminder.disableProperty().bind(
-                lstReminders.getSelectionModel().selectedItemProperty().isNull());
+            lstReminders.getSelectionModel().selectedItemProperty().isNull()
+        );
 
         lstReminders.setItems(reminderList);
+
+        // Disable reminder-related controls when the status is "Completed"
+        cmbStatus.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if ("Completed".equals(newValue)) {
+                // Clear all reminders
+                reminderList.clear();
+
+                // Unbind before setting disable to avoid conflicts
+                btnAddReminder.disableProperty().unbind();
+                btnDeleteReminder.disableProperty().unbind();
+                cmbReminderType.disableProperty().unbind();
+                dpReminderDate.disableProperty().unbind();
+
+                // Disable reminder controls
+                cmbReminderType.setDisable(true);
+                dpReminderDate.setDisable(true);
+                btnAddReminder.setDisable(true);
+                btnDeleteReminder.setDisable(true);
+            } else {
+                // Enable reminder controls for other statuses
+                cmbReminderType.setDisable(false);
+                dpReminderDate.setDisable(!"Specific date".equals(cmbReminderType.getValue()));
+
+                // Rebind Delete Reminder button's disable property
+                btnDeleteReminder.disableProperty().bind(
+                    lstReminders.getSelectionModel().selectedItemProperty().isNull()
+                );
+                btnAddReminder.setDisable(false);
+            }
+        });
     }
+
+
 
     /**
      * Called externally to set the current user.
@@ -124,7 +157,7 @@ public class EditTaskDialogController {
             // Status items — if your User model also stores statuses, use that:
             // cmbStatus.setItems(FXCollections.observableArrayList(currentUser.getStatuses()));
             // Otherwise, hardcode or fetch from somewhere else:
-            cmbStatus.setItems(FXCollections.observableArrayList("Open", "In Progress", "Closed", "On Hold"));
+            cmbStatus.setItems(FXCollections.observableArrayList("Open", "In Progress", "Completed", "Delayed","Postponed"));
 
             // Optionally select first by default if not empty
             if (!cmbCategory.getItems().isEmpty()) {
