@@ -154,6 +154,7 @@ public class MainViewControllerDetailed implements Initializable {
                 }
             }
         });
+    updateAggregatedInfo(); 
     }
 
 
@@ -240,7 +241,6 @@ public class MainViewControllerDetailed implements Initializable {
         return text.substring(0, maxLength - 3) + "..."; // Add ellipsis
     }
 
-
     private void filterTasks() {
         String searchText = txtSearch.getText().toLowerCase();
 
@@ -261,6 +261,7 @@ public class MainViewControllerDetailed implements Initializable {
         );
 
         updateListView(filteredTasks);
+        updateAggregatedInfo(); // Ensure aggregated info is updated
     }
 
 
@@ -425,14 +426,8 @@ public class MainViewControllerDetailed implements Initializable {
 
         // Update the task list from the current user's tasks
         taskList.setAll(currentUser.getTasks());
-        // System.out.println("Reloaded " + taskList.size() + " tasks.");
-
-        // Update the labels with refreshed counts
-        lblTotalTasks.setText("Total Tasks: " + taskList.size());
-        lblCompleted.setText("Completed: " + countTasksByStatus("Completed"));
-        lblDelayed.setText("Delayed: " + countTasksByStatus("Delayed"));
-        lblUpcoming.setText("Due within 7 days: " + countUpcomingTasks());
-
+        updateAggregatedInfo();
+        
         // Refresh each ListView with filtered tasks
         openList.getItems().setAll(filterTasksByStatus("Open"));
         inProgressList.getItems().setAll(filterTasksByStatus("In Progress"));
@@ -440,6 +435,36 @@ public class MainViewControllerDetailed implements Initializable {
         completedList.getItems().setAll(filterTasksByStatus("Completed"));
         delayedList.getItems().setAll(filterTasksByStatus("Delayed"));
     }
+
+    private void updateAggregatedInfo() {
+        int totalVisibleTasks = openList.getItems().size()
+                            + inProgressList.getItems().size()
+                            + postponedList.getItems().size()
+                            + completedList.getItems().size()
+                            + delayedList.getItems().size();
+
+        lblTotalTasks.setText("Total Tasks: " + totalVisibleTasks);
+        lblCompleted.setText("Completed: " + completedList.getItems().size());
+        lblDelayed.setText("Delayed: " + delayedList.getItems().size());
+        lblUpcoming.setText("Due within 7 days: " + countVisibleUpcomingTasks());
+    }
+
+    private long countVisibleUpcomingTasks() {
+        return openList.getItems().stream()
+                .filter(task -> task.isDueWithinDays(7))
+                .count()
+            + inProgressList.getItems().stream()
+                .filter(task -> task.isDueWithinDays(7))
+                .count()
+            + postponedList.getItems().stream()
+                .filter(task -> task.isDueWithinDays(7))
+                .count()
+            + delayedList.getItems().stream()
+                .filter(task -> task.isDueWithinDays(7))
+                .count();
+    }
+
+
 
 
 
