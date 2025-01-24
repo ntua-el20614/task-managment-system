@@ -90,71 +90,130 @@ public class EditTaskDialogController {
         });
 
         // Bind Delete Reminder button disable property to ListView selection
-        btnDeleteReminder.disableProperty().bind(lstReminders.getSelectionModel().selectedItemProperty().isNull());
+        btnDeleteReminder.disableProperty().bind(
+                lstReminders.getSelectionModel().selectedItemProperty().isNull());
 
         lstReminders.setItems(reminderList);
     }
 
-
+    /**
+     * Called externally to set the current user.
+     * This triggers a refresh to load categories, priorities, and statuses.
+     */
     public void setUser(User user) {
+        // Make sure we load the most up-to-date user from your App
         App.refreshCurrentUser();
         this.currentUser = App.getCurrentUser();
-        refreshCategoriesAndPriorities();
+        
+        // Or simply:
+        // this.currentUser = user;
+
+        refreshCategoriesPrioritiesAndStatus();
     }
 
-    private void refreshCategoriesAndPriorities() {
+    /**
+     * Populate the category, priority, and status ComboBoxes
+     * from the current user's data (or some hardcoded default).
+     */
+    private void refreshCategoriesPrioritiesAndStatus() {
         if (currentUser != null) {
+            // Category & Priority from User model
             cmbCategory.setItems(FXCollections.observableArrayList(currentUser.getCategories()));
             cmbPriority.setItems(FXCollections.observableArrayList(currentUser.getPriorities()));
-            if (!cmbCategory.getItems().isEmpty()) cmbCategory.getSelectionModel().selectFirst();
-            if (!cmbPriority.getItems().isEmpty()) cmbPriority.getSelectionModel().selectFirst();
+
+            // Status items — if your User model also stores statuses, use that:
+            // cmbStatus.setItems(FXCollections.observableArrayList(currentUser.getStatuses()));
+            // Otherwise, hardcode or fetch from somewhere else:
+            cmbStatus.setItems(FXCollections.observableArrayList("Open", "In Progress", "Closed", "On Hold"));
+
+            // Optionally select first by default if not empty
+            if (!cmbCategory.getItems().isEmpty()) {
+                cmbCategory.getSelectionModel().selectFirst();
+            }
+            if (!cmbPriority.getItems().isEmpty()) {
+                cmbPriority.getSelectionModel().selectFirst();
+            }
+            if (!cmbStatus.getItems().isEmpty()) {
+                cmbStatus.getSelectionModel().selectFirst();
+            }
         }
     }
 
+    /**
+     * Allows external injection of a callback so that
+     * when the task is updated, the main UI can refresh.
+     */
     public void setOnTaskUpdatedCallback(Consumer<Void> onTaskUpdatedCallback) {
         this.onTaskUpdatedCallback = onTaskUpdatedCallback;
     }
 
+    /**
+     * If you need to refresh data from the outside again.
+     */
     public void refreshData() {
         if (currentUser != null) {
-            refreshCategoriesAndPriorities();
+            refreshCategoriesPrioritiesAndStatus();
         }
     }
 
-    // Overloaded setTask to match external calls expecting (User, Task)
+    /**
+     * Overloaded setTask method for convenience if you want
+     * to pass User and Task together.
+     */
     public void setTask(User user, Task task) {
         this.currentUser = user;
+        refreshCategoriesPrioritiesAndStatus();
         setTask(task);
     }
 
-    // Original setTask method using just Task
+    /**
+     * This is the primary setTask method that populates the form
+     * with the existing task data.
+     */
     public void setTask(Task task) {
         this.currentTask = task;
+
+        if (task == null) {
+            return;
+        }
 
         // Populate fields with existing task details
         txtTitle.setText(task.getTitle());
         txtDescription.setText(task.getDescription());
         cmbCategory.setValue(task.getCategory());
         cmbPriority.setValue(task.getPriority());
-        dpDeadline.setValue(LocalDate.parse(task.getDeadline()));
+
+        // Parse the deadline LocalDate
+        if (task.getDeadline() != null && !task.getDeadline().isEmpty()) {
+            dpDeadline.setValue(LocalDate.parse(task.getDeadline()));
+        } else {
+            dpDeadline.setValue(null);
+        }
+
+        // Status
         cmbStatus.setValue(task.getStatus());
 
         // Load existing reminders into the list
-        if(task.getReminders() != null) {
-            reminderList.clear();
+        reminderList.clear();
+        if (task.getReminders() != null) {
             reminderList.addAll(task.getReminders());
         }
     }
 
-    // Method to retrieve the updated task
+    /**
+     * Retrieve the updated Task after Save if needed.
+     */
     public Optional<Task> getUpdatedTask() {
         return Optional.ofNullable(currentTask);
     }
 
+    /**
+     * Called when "Delete Reminder" button is pressed.
+     */
     @FXML
     private void handleDeleteReminder() {
         String selected = lstReminders.getSelectionModel().getSelectedItem();
-        if(selected != null) {
+        if (selected != null) {
             reminderList.remove(selected);
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -165,7 +224,9 @@ public class EditTaskDialogController {
         }
     }
 
-
+    /**
+     * Called when "Add Reminder" button is pressed.
+     */
     @FXML
     private void handleAddReminder() {
         String type = cmbReminderType.getValue();
@@ -241,10 +302,15 @@ public class EditTaskDialogController {
         }
 
         // Add the reminder to the list
+        // This line differs from your 'AddTaskDialog' — 
+        // you might want to keep the same format (including the type) if needed:
+        // e.g. reminderList.add(type + " (" + reminderDateStr + ")");
         reminderList.add(reminderDateStr);
     }
 
-
+    /**
+     * Called when "Save" button is pressed.
+     */
     @FXML
     private void handleSave() {
         String title = txtTitle.getText().trim();
@@ -254,6 +320,7 @@ public class EditTaskDialogController {
         String status = cmbStatus.getValue();
         LocalDate deadline = dpDeadline.getValue();
 
+        // Basic validation
         if (title.isEmpty() || deadline == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Validation Error");
@@ -271,12 +338,11 @@ public class EditTaskDialogController {
         currentTask.setDeadline(deadline.format(DateTimeFormatter.ISO_DATE));
         currentTask.setStatus(status);
 
-        // Clear existing reminders if the list exists and update with new ones
-        if(currentTask.getReminders() != null) {
+        // Update reminders
+        if (currentTask.getReminders() != null) {
             currentTask.getReminders().clear();
         }
-
-        for(String reminderInfo : reminderList) {
+        for (String reminderInfo : reminderList) {
             currentTask.addReminder(reminderInfo);
         }
 
@@ -293,6 +359,9 @@ public class EditTaskDialogController {
         stage.close();
     }
 
+    /**
+     * Called when "Cancel" button is pressed.
+     */
     @FXML
     private void handleCancel() {
         Stage stage = (Stage) btnSave.getScene().getWindow();
