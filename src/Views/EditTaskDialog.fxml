@@ -5,16 +5,21 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 
-<GridPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.EditTaskDialogController" hgap="10" vgap="10">
+<GridPane xmlns="http://javafx.com/javafx/23.0.1" 
+          xmlns:fx="http://javafx.com/fxml/1" 
+          fx:controller="Controllers.EditTaskDialogController" 
+          hgap="10" vgap="10">
     <padding>
         <Insets top="20" right="20" bottom="10" left="20"/>
     </padding>
     <children>
+        <!-- Existing task fields -->
         <Label text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
         <TextField fx:id="txtTitle" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
@@ -30,10 +35,28 @@
         <Label text="Deadline:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
         <DatePicker fx:id="dpDeadline" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-        <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-        <ComboBox fx:id="cmbStatus" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+        <!-- New reminder fields -->
+        <Label text="Reminder Type:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <ComboBox fx:id="cmbReminderType" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
-        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="6" alignment="CENTER_RIGHT">
+        <Label text="Reminder Date:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+        <DatePicker fx:id="dpReminderDate" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+        <Label text="Reminders:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+        <ListView fx:id="lstReminders" GridPane.columnIndex="1" GridPane.rowIndex="7" prefHeight="100"/>
+
+        <!-- HBox for Add and Delete Reminder Buttons -->
+        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="8" alignment="CENTER_LEFT">
+            <children>
+                <Button text="Add Reminder" onAction="#handleAddReminder" fx:id="btnAddReminder"/>
+                <Button text="Delete Reminder" onAction="#handleDeleteReminder" fx:id="btnDeleteReminder"/>
+            </children>
+        </HBox>
+
+        <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+        <ComboBox fx:id="cmbStatus" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+
+        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="10" alignment="CENTER_RIGHT">
             <children>
                 <Button text="Cancel" onAction="#handleCancel"/>
                 <Button text="Save" onAction="#handleSave" fx:id="btnSave" disable="true"/>
@@ -41,3 +64,4 @@
         </HBox>
     </children>
 </GridPane>
+

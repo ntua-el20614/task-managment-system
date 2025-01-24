@@ -1,5 +1,6 @@
 package Controllers;
 
+import Models.User;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,12 +14,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.stage.Stage;
-
+import java.time.LocalDate;
 import java.io.IOException;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.scene.control.Alert;
 
 import src.App;
 
 public class MainControllerWrapper {
+
+    private User currentUser;
 
     @FXML
     private BorderPane rootPane; // Must match fx:id in FXML
@@ -50,11 +56,13 @@ public class MainControllerWrapper {
 
     @FXML
     public void initialize() {
+        currentUser = App.getCurrentUser(); // Fetch the current user
         loadDetailedView(); // Set default view
         updateEyeIcon();    // Set the initial image
         setupLockIcon();    // Initialize the lock button
         setupWelcomeMessage(); // Set the welcome message
         adjustLayout(); // Adjust layout programmatically if needed
+        showReminders(); // Show reminders if any
     }
 
     @FXML
@@ -136,6 +144,55 @@ public class MainControllerWrapper {
         }
         closeWindow();
     }
+
+    private void showReminders() {
+        LocalDate today = LocalDate.now();
+
+        currentUser.getTasks().stream()
+            .filter(task -> task.getReminders() != null)
+            .forEach(task -> {
+                task.getReminders().forEach(reminder -> {
+                    try {
+                        // Extract the date part from the reminder string
+                        String datePart = reminder.replaceAll(".*\\((\\d{4}-\\d{2}-\\d{2})\\).*", "$1");
+                        LocalDate reminderDate = LocalDate.parse(datePart);
+
+                        if (reminderDate.isEqual(today)) {
+                            openReminderWindow(task.getTitle(), task.getDescription(), task.getDeadline(), reminder);
+                        }
+                    } catch (Exception e) {
+                        System.err.println("Failed to parse reminder date: " + reminder + " - " + e.getMessage());
+                    }
+                });
+            });
+    }
+
+
+    private void openReminderWindow(String title, String description, String deadline, String reminderDate) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/ReminderAlertView.fxml"));
+            Parent root = loader.load();
+
+            ReminderAlertController controller = loader.getController();
+            controller.setReminderDetails(title, description, deadline, reminderDate);
+
+            Stage stage = new Stage();
+            stage.setTitle("Reminder");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace(); // Log the exception stack trace
+
+            // Directly create and show an alert here
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null); // No header
+            alert.setContentText("Failed to load Reminder window. " + e.getMessage());
+            alert.showAndWait();
+        }
+    }
+
 
     public void closeWindow() {
         if (rootPane.getScene() != null && rootPane.getScene().getWindow() != null) {
