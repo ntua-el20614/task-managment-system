@@ -184,6 +184,18 @@
                 </graphic>
             </Button>
 
+              <Button text="View Reminders" onAction="#handleViewReminders"
+                     style="-fx-background-color: #232323; 
+                            -fx-text-fill: #1FC8DB;
+                            -fx-font-weight: bold; 
+                            -fx-border-color: #1FC8DB; 
+                            -fx-border-radius: 8; 
+                            -fx-background-radius: 8;">
+                     <graphic>
+                     <ImageView fx:id="remindersIcon" fitWidth="16" fitHeight="16" />
+                     </graphic>
+              </Button>
+
             <Button text="Delete Task" onAction="#handleDeleteTask"
                     style="-fx-background-color: #232323; 
                            -fx-text-fill: #1FC8DB;

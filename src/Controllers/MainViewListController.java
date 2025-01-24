@@ -24,6 +24,7 @@ import javafx.stage.Modality;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.io.IOException;
 
 public class MainViewListController implements Initializable {
 
@@ -49,9 +50,14 @@ public class MainViewListController implements Initializable {
     @FXML
     private Button btnDelete;
     @FXML
-    private Button btnLogout;  // Or rename to what you need
+    private Button btnLogout;
 
-    // NEW: Search & Filters Controls
+    @FXML
+    private Button btnViewReminders;
+
+    @FXML
+    private ImageView remindersIcon;
+
     @FXML
     private TextField txtSearch;
 
@@ -335,6 +341,37 @@ public class MainViewListController implements Initializable {
         }
     }
 
+    @FXML
+    private void handleViewReminders() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/RemindersViewer.fxml"));
+            Parent root = loader.load();
+
+            // Get the controller and pass the currentUser
+            RemindersViewerController controller = loader.getController();
+            controller.setUser(currentUser); // Pass the latest user data
+
+            // Create a new stage for the reminders view
+            Stage remindersStage = new Stage();
+            remindersStage.setTitle("Reminders Viewer");
+            remindersStage.initModality(Modality.APPLICATION_MODAL);
+            remindersStage.setScene(new Scene(root));
+
+            // Add a listener to reload tasks when the stage is closed
+            remindersStage.setOnHidden(event -> {
+                reloadTasks();
+                filterTasks(); // Ensure filters are reapplied
+            });
+
+            // Show the reminders viewer and wait for it to close
+            remindersStage.showAndWait();
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to open Reminders Viewer.");
+            e.printStackTrace();
+        }
+    }
+
+
     private void updateAggregatedInfo() {
         lblTotalTasks.setText("Total Tasks: " + taskList.size());
         lblCompleted.setText("Completed: " + countTasksByStatus("Completed"));
@@ -361,6 +398,7 @@ public class MainViewListController implements Initializable {
         deleteIcon.setImage(new Image(App.class.getResource("/Media/delete.png").toExternalForm()));
         refreshIcon.setImage(new Image(App.class.getResource("/Media/refresh.png").toExternalForm()));
         settingsIcon.setImage(new Image(App.class.getResource("/Media/settings.png").toExternalForm()));
+        remindersIcon.setImage(new Image(App.class.getResource("/Media/reminder.png").toExternalForm()));
     }
 
     // ===================

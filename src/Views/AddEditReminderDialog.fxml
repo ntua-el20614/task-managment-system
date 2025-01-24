@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" 
+    fx:controller="Controllers.AddEditReminderDialogController"
+    style="-fx-background-color: linear-gradient(to bottom right, #1B2735, #090A0F);
+           -fx-padding: 15;">
+
+    <center>
+        <VBox spacing="20" 
+              style="-fx-background-color: rgba(255, 255, 255, 0.1);
+                     -fx-border-color: #1FC8DB;
+                     -fx-border-width: 2;
+                     -fx-border-radius: 8;
+                     -fx-padding: 20;">
+            
+            <Label text="Add/Edit Reminder" 
+                   style="-fx-text-fill: #1FC8DB; 
+                          -fx-font-size: 18px; 
+                          -fx-font-weight: bold;"/>
+
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Label text="Select Task:" 
+                       style="-fx-text-fill: #FFFFFF; 
+                              -fx-font-size: 14px;"/>
+                <ComboBox fx:id="cmbTaskSelector" 
+                          style="-fx-background-color: #232323; 
+                                 -fx-text-fill: white; 
+                                 -fx-border-color: #1FC8DB; 
+                                 -fx-border-radius: 4;"/>
+            </HBox>
+
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Label text="Reminder Type:" 
+                       style="-fx-text-fill: #FFFFFF; 
+                              -fx-font-size: 14px;"/>
+                <ComboBox fx:id="cmbReminderType" 
+                          style="-fx-background-color: #232323; 
+                                 -fx-text-fill: #FFFFFF; 
+                                 -fx-border-color: #1FC8DB; 
+                                 -fx-border-radius: 4;"/>
+            </HBox>
+
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Label text="Reminder Date:" 
+                       style="-fx-text-fill: #FFFFFF; 
+                              -fx-font-size: 14px;"/>
+                <DatePicker fx:id="dpReminderDate" 
+                            style="-fx-background-color: #232323; 
+                                   -fx-text-fill: #FFFFFF; 
+                                   -fx-border-color: #1FC8DB; 
+                                   -fx-border-radius: 4;"/>
+            </HBox>
+
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox spacing="15" 
+              style="-fx-padding: 15; 
+                     -fx-background-color: rgba(0, 255, 255, 0.1);
+                     -fx-border-color: #1FC8DB;
+                     -fx-border-width: 2 0 0 0;"
+              alignment="CENTER_RIGHT">
+
+            <Button fx:id="btnSave" text="Save" 
+                    onAction="#handleSave"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB; 
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;"/>
+
+            <Button fx:id="btnCancel" text="Cancel" 
+                    onAction="#handleCancel"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB; 
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;"/>
+        </HBox>
+    </bottom>
+</BorderPane>

@@ -88,6 +88,11 @@ public class MainViewControllerDetailed implements Initializable {
     @FXML
     private ComboBox<String> cmbPriority;
 
+    @FXML
+    private Button btnViewReminders;
+
+    @FXML
+    private ImageView remindersIcon;
 
     @FXML
     private Button btnClearFilters;
@@ -556,6 +561,37 @@ public class MainViewControllerDetailed implements Initializable {
         }
     }
 
+    @FXML
+    private void handleViewReminders() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/RemindersViewer.fxml"));
+            Parent root = loader.load();
+
+            // Get the controller and pass the currentUser
+            RemindersViewerController controller = loader.getController();
+            controller.setUser(currentUser); // Pass the latest user data
+
+            // Create a new stage for the reminders view
+            Stage remindersStage = new Stage();
+            remindersStage.setTitle("Reminders Viewer");
+            remindersStage.initModality(Modality.APPLICATION_MODAL);
+            remindersStage.setScene(new Scene(root));
+
+            // Add a listener to reload tasks when the stage is closed
+            remindersStage.setOnHidden(event -> {
+                reloadTasks();
+                filterTasks(); // Ensure filters are reapplied
+            });
+
+            // Show the reminders viewer and wait for it to close
+            remindersStage.showAndWait();
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to open Reminders Viewer.");
+            e.printStackTrace();
+        }
+    }
+
+
 
     @FXML
     private void handleRefresh() {
@@ -609,6 +645,7 @@ public class MainViewControllerDetailed implements Initializable {
             deleteIcon.setImage(new Image(App.class.getResource("/Media/delete.png").toExternalForm()));
             refreshIcon.setImage(new Image(App.class.getResource("/Media/refresh.png").toExternalForm()));
             settingsIcon.setImage(new Image(App.class.getResource("/Media/settings.png").toExternalForm()));
+            remindersIcon.setImage(new Image(App.class.getResource("/Media/reminder.png").toExternalForm()));
         } catch (NullPointerException e) {
             System.err.println("Error loading button icons: " + e.getMessage());
         }

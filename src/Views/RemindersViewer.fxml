@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.ImageView?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" 
+            fx:controller="Controllers.RemindersViewerController"
+            style="-fx-background-color: linear-gradient(to bottom right, #1B2735, #090A0F); -fx-padding: 20;">
+
+    <top>
+        <HBox alignment="CENTER" spacing="10"
+              style="-fx-background-color: rgba(0, 255, 255, 0.1);
+                     -fx-border-color: #1FC8DB;
+                     -fx-border-width: 0 0 2 0; -fx-padding: 10;">
+            <Label text="All Reminders" 
+                   style="-fx-text-fill: #1FC8DB; 
+                          -fx-font-size: 20px; 
+                          -fx-font-weight: bold;"/>
+            <Separator orientation="HORIZONTAL" prefWidth="400"/>
+        </HBox>
+    </top>
+
+    <center>
+        <ListView fx:id="remindersListView" 
+                  style="-fx-background-color: #232323; 
+                         -fx-text-fill: white; 
+                         -fx-border-radius: 8; 
+                         -fx-padding: 10;"
+                  prefHeight="400"/>
+    </center>
+
+    <bottom>
+        <HBox spacing="15" alignment="CENTER_RIGHT"
+              style="-fx-padding: 15; 
+                     -fx-background-color: rgba(0, 255, 255, 0.1);
+                     -fx-border-color: #1FC8DB;
+                     -fx-border-width: 2 0 0 0;">
+
+            <Button fx:id="btnAddReminder" text="Add Reminder" onAction="#handleAddReminder"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB; 
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;">
+                <graphic>
+                    <ImageView fx:id="addReminderIcon" fitWidth="16" fitHeight="16" />
+                </graphic>
+            </Button>
+
+            <Button fx:id="btnEditReminder" text="Edit Reminder" onAction="#handleEditReminder"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB; 
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;">
+                <graphic>
+                    <ImageView fx:id="editReminderIcon" fitWidth="16" fitHeight="16" />
+                </graphic>
+            </Button>
+
+            <Button fx:id="btnDeleteReminder" text="Delete Reminder" onAction="#handleDeleteReminder"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB; 
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;">
+                <graphic>
+                    <ImageView fx:id="deleteReminderIcon" fitWidth="16" fitHeight="16" />
+                </graphic>
+            </Button>
+
+            <Button fx:id="btnClose" text="Close" onAction="#handleClose"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB; 
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;" />
+        </HBox>
+    </bottom>
+
+</BorderPane>

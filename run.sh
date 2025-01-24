@@ -60,6 +60,8 @@ javac --module-path "$PATH_TO_FX:$PATH_TO_GLISTEN_LIB" \
       src/Controllers/MainViewControllerDetailed.java \
       src/Controllers/MainViewListController.java \
       src/Controllers/ReminderAlertController.java \
+      src/Controllers/RemindersViewerController.java \
+      src/Controllers/AddEditReminderDialogController.java \
       src/Controllers/SettingsViewController.java \
       src/Models/Task.java \
       src/Models/User.java \
