@@ -1,67 +1,182 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.geometry.Insets?>
 
-<GridPane xmlns="http://javafx.com/javafx/23.0.1" 
-          xmlns:fx="http://javafx.com/fxml/1" 
-          fx:controller="Controllers.EditTaskDialogController" 
-          hgap="10" vgap="10">
-    <padding>
-        <Insets top="20" right="20" bottom="10" left="20"/>
-    </padding>
-    <children>
-        <!-- Existing task fields -->
-        <Label text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <TextField fx:id="txtTitle" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" 
+    xmlns:fx="http://javafx.com/fxml/1" 
+    fx:controller="Controllers.EditTaskDialogController"
+    style="-fx-background-color: linear-gradient(to bottom right, #1B2735, #090A0F);
+           -fx-padding: 15;">
 
-        <Label text="Description:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <TextArea fx:id="txtDescription" GridPane.columnIndex="1" GridPane.rowIndex="1" prefRowCount="3"/>
+    <center>
+        <VBox spacing="20" 
+              style="-fx-background-color: rgba(255, 255, 255, 0.1);
+                     -fx-border-color: #1FC8DB;
+                     -fx-border-width: 2;
+                     -fx-border-radius: 8;
+                     -fx-padding: 20;">
 
-        <Label text="Category:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-        <ComboBox fx:id="cmbCategory" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <Label text="Edit Task" 
+                   style="-fx-text-fill: #1FC8DB; 
+                          -fx-font-size: 18px; 
+                          -fx-font-weight: bold;"/>
 
-        <Label text="Priority:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-        <ComboBox fx:id="cmbPriority" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <HBox spacing="15">
+                <Label text="Title:" 
+                       style="-fx-text-fill: #FFFFFF; 
+                              -fx-font-size: 14px;"/>
+                <TextField fx:id="txtTitle" 
+                           style="-fx-background-color: #232323; 
+                                  -fx-text-fill: #FFFFFF; 
+                                  -fx-border-color: #1FC8DB; 
+                                  -fx-border-radius: 4;"/>
+            </HBox>
 
-        <Label text="Deadline:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-        <DatePicker fx:id="dpDeadline" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <HBox spacing="15">
+                <Label text="Description:" 
+                       style="-fx-text-fill: #FFFFFF; 
+                              -fx-font-size: 14px;"/>
+                <TextArea fx:id="txtDescription" 
+                          style="-fx-background-color: #ffffff; 
+                                 -fx-text-fill: #232323; 
+                                 -fx-border-color: #1FC8DB; 
+                                 -fx-border-radius: 4;"/>
+            </HBox>
 
-        <!-- New reminder fields -->
-        <Label text="Reminder Type:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-        <ComboBox fx:id="cmbReminderType" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+            <HBox spacing="15">
+                <Label text="Category:" 
+                       style="-fx-text-fill: #FFFFFF; 
+                              -fx-font-size: 14px;"/>
+                <ComboBox fx:id="cmbCategory" 
+                          style="-fx-background-color: #ffffff; 
+                                 -fx-text-fill: #232323; 
+                                 -fx-border-color: #1FC8DB; 
+                                 -fx-border-radius: 4;"/>
+            </HBox>
 
-        <Label text="Reminder Date:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-        <DatePicker fx:id="dpReminderDate" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+            <HBox spacing="15">
+                <Label text="Priority:" 
+                       style="-fx-text-fill: #FFFFFF; 
+                              -fx-font-size: 14px;"/>
+                <ComboBox fx:id="cmbPriority" 
+                          style="-fx-background-color: #ffffff; 
+                                 -fx-text-fill: #232323; 
+                                 -fx-border-color: #1FC8DB; 
+                                 -fx-border-radius: 4;"/>
+            </HBox>
 
-        <Label text="Reminders:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
-        <ListView fx:id="lstReminders" GridPane.columnIndex="1" GridPane.rowIndex="7" prefHeight="100"/>
+            <HBox spacing="15">
+                <Label text="Deadline:" 
+                       style="-fx-text-fill: #FFFFFF; 
+                              -fx-font-size: 14px;"/>
+                <DatePicker fx:id="dpDeadline" 
+                            style="-fx-background-color: #232323; 
+                                   -fx-text-fill: #FFFFFF; 
+                                   -fx-border-color: #1FC8DB; 
+                                   -fx-border-radius: 4;"/>
+            </HBox>
 
-        <!-- HBox for Add and Delete Reminder Buttons -->
-        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="8" alignment="CENTER_LEFT">
-            <children>
-                <Button text="Add Reminder" onAction="#handleAddReminder" fx:id="btnAddReminder"/>
-                <Button text="Delete Reminder" onAction="#handleDeleteReminder" fx:id="btnDeleteReminder"/>
-            </children>
+            <HBox spacing="15">
+                <Label text="Reminder Type:" 
+                       style="-fx-text-fill: #FFFFFF; 
+                              -fx-font-size: 14px;"/>
+                <ComboBox fx:id="cmbReminderType" 
+                          style="-fx-background-color: #ffffff; 
+                                 -fx-text-fill: #232323; 
+                                 -fx-border-color: #1FC8DB; 
+                                 -fx-border-radius: 4;"/>
+            </HBox>
+
+            <HBox spacing="15">
+                <Label text="Reminder Date:" 
+                       style="-fx-text-fill: #FFFFFF; 
+                              -fx-font-size: 14px;"/>
+                <DatePicker fx:id="dpReminderDate" 
+                            style="-fx-background-color: #232323; 
+                                   -fx-text-fill: #FFFFFF; 
+                                   -fx-border-color: #1FC8DB; 
+                                   -fx-border-radius: 4;"/>
+            </HBox>
+
+            <VBox spacing="10">
+                <Label text="Reminders:" 
+                       style="-fx-text-fill: #FFFFFF; 
+                              -fx-font-size: 14px;"/>
+                <ListView fx:id="lstReminders" 
+                          style="-fx-background-color: #232323; 
+                                 -fx-text-fill: #FFFFFF; 
+                                 -fx-border-color: #1FC8DB; 
+                                 -fx-border-radius: 4;"/>
+                <HBox spacing="15">
+                    <Button text="Add Reminder" 
+                            fx:id="btnAddReminder"
+                            style="-fx-background-color: #232323; 
+                                   -fx-text-fill: #1FC8DB; 
+                                   -fx-font-weight: bold; 
+                                   -fx-border-color: #1FC8DB; 
+                                   -fx-border-radius: 8; 
+                                   -fx-background-radius: 8;"/>
+                    <Button text="Delete Reminder" 
+                            fx:id="btnDeleteReminder"
+                            style="-fx-background-color: #232323; 
+                                   -fx-text-fill: #1FC8DB; 
+                                   -fx-font-weight: bold; 
+                                   -fx-border-color: #1FC8DB; 
+                                   -fx-border-radius: 8; 
+                                   -fx-background-radius: 8;"/>
+                </HBox>
+            </VBox>
+
+            <HBox spacing="15">
+                <Label text="Status:" 
+                       style="-fx-text-fill: #FFFFFF; 
+                              -fx-font-size: 14px;"/>
+                <ComboBox fx:id="cmbStatus" 
+                          style="-fx-background-color: #ffffff; 
+                                 -fx-text-fill: #232323; 
+                                 -fx-border-color: #1FC8DB; 
+                                 -fx-border-radius: 4;"/>
+            </HBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox spacing="15" 
+              style="-fx-padding: 15; 
+                     -fx-background-color: rgba(0, 255, 255, 0.1);
+                     -fx-border-color: #1FC8DB;
+                     -fx-border-width: 2 0 0 0;"
+              alignment="CENTER_RIGHT">
+
+            <Button text="Cancel" 
+                    onAction="#handleCancel"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB; 
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;"/>
+
+            <Button text="Save" 
+                    fx:id="btnSave" 
+                    onAction="#handleSave"
+                    disable="true"
+                    style="-fx-background-color: #232323; 
+                           -fx-text-fill: #1FC8DB; 
+                           -fx-font-weight: bold; 
+                           -fx-border-color: #1FC8DB; 
+                           -fx-border-radius: 8; 
+                           -fx-background-radius: 8;"/>
         </HBox>
-
-        <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
-        <ComboBox fx:id="cmbStatus" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
-
-        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="10" alignment="CENTER_RIGHT">
-            <children>
-                <Button text="Cancel" onAction="#handleCancel"/>
-                <Button text="Save" onAction="#handleSave" fx:id="btnSave" disable="true"/>
-            </children>
-        </HBox>
-    </children>
-</GridPane>
-
+    </bottom>
+</BorderPane>
