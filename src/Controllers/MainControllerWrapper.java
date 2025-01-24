@@ -152,13 +152,21 @@ public class MainControllerWrapper {
             .filter(task -> task.getReminders() != null)
             .forEach(task -> {
                 task.getReminders().forEach(reminder -> {
-                    LocalDate reminderDate = LocalDate.parse(reminder);
-                    if (reminderDate.isEqual(today)) {
-                        openReminderWindow(task.getTitle(), task.getDescription(), task.getDeadline(), reminder);
+                    try {
+                        // Extract the date part from the reminder string
+                        String datePart = reminder.replaceAll(".*\\((\\d{4}-\\d{2}-\\d{2})\\).*", "$1");
+                        LocalDate reminderDate = LocalDate.parse(datePart);
+
+                        if (reminderDate.isEqual(today)) {
+                            openReminderWindow(task.getTitle(), task.getDescription(), task.getDeadline(), reminder);
+                        }
+                    } catch (Exception e) {
+                        System.err.println("Failed to parse reminder date: " + reminder + " - " + e.getMessage());
                     }
                 });
             });
     }
+
 
     private void openReminderWindow(String title, String description, String deadline, String reminderDate) {
         try {
