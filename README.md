@@ -9,16 +9,20 @@
 
 Below are screenshots that showcase key aspects of the application:  
 
-### 1. Edit Task  
-![Edit Task](./media/edit_task.png)  
+### Main Interface  
 
-### 2. Task List  
-![Task List](./media/list.png)  
+| Edit Task (Left)                  | Task List (Top Right)          |
+|-----------------------------------|--------------------------------|
+| ![Edit Task](./media/edit_task.png) | ![Task List](./media/list.png) |
 
-### 3. Tasks Per Status  
-![Tasks Per Status](./media/per_status.png)  
+| Tasks Per Status (Bottom Right)   |
+|-----------------------------------|
+| ![Tasks Per Status](./media/per_status.png) |
 
-### 4. Settings Menu  
+---
+
+### Settings Menu  
+
 ![Settings Menu](./media/settings.png)  
 
 ---

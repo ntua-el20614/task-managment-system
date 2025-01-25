@@ -1,3 +1,38 @@
 [
-
+  {
+    "username": "chris",
+    "passwordHash": "$2a$10$aD5EsmzOfEIswtAdAt8ZeuKIN6Tiiz6mwL6pP0gCzW7o6su5HUd8.",
+    "tasks": [],
+    "categories": [],
+    "priorities": [
+      "Default"
+    ]
+  },
+  {
+    "username": "john",
+    "passwordHash": "$2a$10$ZTX/q44f4fyMuNBVFUYs/udP..5eHTDY5lzZyYz2ujLP6X4k7/vQe",
+    "tasks": [
+      {
+        "id": "cba546c1-69bb-4c25-a3e6-c5bdf2d06c24",
+        "title": "Multimedia",
+        "description": "complete the project for multimedia",
+        "category": "University",
+        "priority": "Default",
+        "deadline": "2025-02-21",
+        "status": "Open",
+        "reminders": [
+          "2025-02-14",
+          "2025-01-26"
+        ]
+      }
+    ],
+    "categories": [
+      "University",
+      "Work"
+    ],
+    "priorities": [
+      "Default",
+      "Urgent"
+    ]
+  }
 ]
