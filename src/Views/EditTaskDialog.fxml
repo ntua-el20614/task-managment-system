@@ -10,7 +10,6 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.geometry.Insets?>
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.171" 
     xmlns:fx="http://javafx.com/fxml/1" 
@@ -47,8 +46,8 @@
                        style="-fx-text-fill: #FFFFFF; 
                               -fx-font-size: 14px;"/>
                 <TextArea fx:id="txtDescription" 
-                          style="-fx-background-color: #ffffff; 
-                                 -fx-text-fill: #232323; 
+                          style="-fx-background-color: #232323; 
+                                 -fx-text-fill: #FFFFFF; 
                                  -fx-border-color: #1FC8DB; 
                                  -fx-border-radius: 4;"/>
             </HBox>
@@ -120,6 +119,7 @@
                 <HBox spacing="15">
                     <Button text="Add Reminder" 
                             fx:id="btnAddReminder"
+                            onAction="#handleAddReminder"
                             style="-fx-background-color: #232323; 
                                    -fx-text-fill: #1FC8DB; 
                                    -fx-font-weight: bold; 
@@ -128,6 +128,7 @@
                                    -fx-background-radius: 8;"/>
                     <Button text="Delete Reminder" 
                             fx:id="btnDeleteReminder"
+                            onAction="#handleDeleteReminder"
                             style="-fx-background-color: #232323; 
                                    -fx-text-fill: #1FC8DB; 
                                    -fx-font-weight: bold; 
