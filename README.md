@@ -11,11 +11,11 @@ Below are screenshots that showcase key aspects of the application:
 
 ### Main Interface  
 
-| Edit Task (Left)                  | Task List (Top Right)          |
+| Edit Task                         | Task List                      |
 |-----------------------------------|--------------------------------|
 | ![Edit Task](./media/edit_task.png) | ![Task List](./media/list.png) |
 
-| Tasks Per Status (Bottom Right)   |
+| Tasks Per Status                  |
 |-----------------------------------|
 | ![Tasks Per Status](./media/per_status.png) |
 
