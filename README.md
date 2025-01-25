@@ -1,7 +1,25 @@
 # Task Management System  
 
-**Final Project - Multimedia Technology**  
-**Christodoulos Stylianidis (el20614)**  
+**Project - Multimedia Technology**  
+**Christodoulos Stylianidis**  
+
+---
+
+## Overview  
+
+Below are screenshots that showcase key aspects of the application:  
+
+### 1. Edit Task  
+![Edit Task](./media/edit_task.png)  
+
+### 2. Task List  
+![Task List](./media/list.png)  
+
+### 3. Tasks Per Status  
+![Tasks Per Status](./media/per_status.png)  
+
+### 4. Settings Menu  
+![Settings Menu](./media/settings.png)  
 
 ---
 
