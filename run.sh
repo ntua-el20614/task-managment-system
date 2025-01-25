@@ -3,7 +3,7 @@
 # run.sh - Compiles and runs the Task Management System JavaFX application with Gluon Glisten
 
 # Set the path to JavaFX SDK
-PATH_TO_FX=/Users/chris/javafx-sdk-23.0.1/lib
+PATH_TO_FX=./lib/javafx-sdk-23.0.1/lib
 
 # Set the path to Gluon Glisten library
 PATH_TO_GLISTEN_LIB=./lib/charm-glisten-5.0.0.jar
