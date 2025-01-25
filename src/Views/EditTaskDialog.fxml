@@ -46,8 +46,8 @@
                        style="-fx-text-fill: #FFFFFF; 
                               -fx-font-size: 14px;"/>
                 <TextArea fx:id="txtDescription" 
-                          style="-fx-background-color: #232323; 
-                                 -fx-text-fill: #FFFFFF; 
+                          style="-fx-background-color: #ffffff; 
+                                 -fx-text-fill: #232323; 
                                  -fx-border-color: #1FC8DB; 
                                  -fx-border-radius: 4;"/>
             </HBox>
